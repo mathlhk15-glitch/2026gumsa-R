@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 창원경일고 인성적성진로자기주도 검사 결과</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap');
+:root {
+  --bg: #0f1117; --surface: #1a1d27; --surface2: #242836;
+  --border: #2e3347; --text: #e4e7f1; --text2: #8b90a5;
+  --accent: #6c63ff; --accent2: #00d4aa; --accent3: #ff6b6b;
+  --warn: #f59e0b; --blue: #3b82f6; --pink: #ec4899;
+  --radius: 12px;
+}
+body.light-mode {
+  --bg: #f0f2f7; --surface: #ffffff; --surface2: #f0f2f7;
+  --border: #d1d5e0; --text: #1a1d27; --text2: #5a6075;
+  --accent: #5a52e0; --accent2: #00a884; --accent3: #e05555;
+  --warn: #d97706;
+}
+body.light-mode .header {
+  background: linear-gradient(135deg,#ffffff 0%,#f0f2f7 100%);
+}
+body.light-mode .header h1 {
+  background: linear-gradient(135deg,#5a52e0,#00a884);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+body.light-mode .profile-avatar {
+  background: linear-gradient(135deg,#5a52e0,#00a884);
+}
+/* PDF / Print */
+@media print {
+  body { background:#fff !important; color:#000 !important; }
+  .header-controls, .no-print { display:none !important; }
+  .header { background:#fff !important; border-bottom:2px solid #333 !important; padding:10px 24px !important; }
+  .header h1 { -webkit-text-fill-color:#333 !important; background:none !important; color:#333 !important; font-size:16px !important; }
+  .card { background:#fff !important; border:1px solid #ccc !important; break-inside:avoid; margin-bottom:12px !important; }
+  .card-title { color:#333 !important; }
+  .stat-box { background:#f0f2f7 !important; }
+  .stat-box .label { color:#666 !important; }
+  .stat-box .value { color:#1a1d27 !important; }
+  .sbu-box { background:#f5f5f5 !important; color:#000 !important; max-height:none !important; }
+  .per-table td, .per-table th { color:#000 !important; border-color:#ddd !important; background:#fff !important; }
+  .per-table th { background:#f0f2f7 !important; }
+  .per-badge { border:1px solid #ccc !important; color:#333 !important; background:#f0f2f7 !important; }
+  .per-vhigh, .per-high { color:#006b5c !important; background:#e6f4f1 !important; }
+  .per-mid { color:#3b2eb0 !important; background:#ede8ff !important; }
+  .per-low { color:#7a5900 !important; background:#fff3cd !important; }
+  .per-vlow { color:#8b0000 !important; background:#fde8e8 !important; }
+  canvas { max-height:200px !important; }
+  .chart-wrap { height:200px !important; }
+  .grid-2 { grid-template-columns:1fr 1fr !important; gap:10px !important; }
+  .timeline { max-height:none !important; overflow:visible !important; }
+  .tl-date,.tl-desc { color:#555 !important; }
+  .tl-title { color:#000 !important; }
+  .tl-dot.test { background:#5a52e0 !important; }
+  .tl-dot.counsel { background:#00a884 !important; }
+  .tag { border:1px solid #ccc !important; }
+  .tag-type { color:#5a52e0 !important; background:#ede8ff !important; }
+  .tag-interest { color:#006b5c !important; background:#e6f4f1 !important; }
+  .tag-warn { color:#7a5900 !important; background:#fff3cd !important; }
+  .profile-avatar { background:#5a52e0 !important; -webkit-print-color-adjust:exact; }
+  .value.high { color:#006b5c !important; }
+  .value.mid  { color:#d97706 !important; }
+  .value.low  { color:#c0392b !important; }
+  .sdl-empty, .growth-empty { color:#666 !important; }
+  @page { margin: 15mm; size: A4; }
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+/* HEADER */
+.header { background:linear-gradient(135deg,#1a1d27 0%,#242836 100%); border-bottom:1px solid var(--border); padding:16px 24px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+.header h1 { font-size:18px; font-weight:700; background:linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; white-space:nowrap; }
+.header-controls { display:flex; gap:8px; align-items:center; flex:1; min-width:300px; }
+.header-controls input { background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:8px 14px; border-radius:8px; font-size:13px; font-family:inherit; outline:none; transition:border .2s; }
+.header-controls input:focus { border-color:var(--accent); }
+#gasUrl { flex:1; min-width:200px; }
+#studentId { width:120px; }
+.btn { padding:8px 16px; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; transition:all .2s; }
+.btn-primary { background:var(--accent); color:#fff; }
+.btn-primary:hover { background:#5a52e0; transform:translateY(-1px); }
+.btn-secondary { background:var(--surface2); color:var(--text2); border:1px solid var(--border); }
+.btn-secondary:hover { border-color:var(--accent); color:var(--text); }
+.btn-green { background:#059669; color:#fff; }
+.btn-green:hover { background:#047857; }
+
+/* LAYOUT */
+.main { max-width:1400px; margin:0 auto; padding:20px; }
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+.grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:16px; }
+@media(max-width:900px) { .grid-2,.grid-3 { grid-template-columns:1fr; } }
+
+/* CARDS */
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px; }
+.card-title { font-size:13px; font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:1px; margin-bottom:14px; display:flex; align-items:center; gap:6px; }
+.card-title span { font-size:15px; }
+
+/* STUDENT PROFILE */
+.profile { display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+.profile-avatar { width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:900; color:#fff; flex-shrink:0; }
+.profile-info h2 { font-size:22px; font-weight:700; margin-bottom:4px; }
+.profile-info p { font-size:13px; color:var(--text2); }
+.profile-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+.tag { padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600; }
+.tag-type { background:rgba(108,99,255,.15); color:var(--accent); border:1px solid rgba(108,99,255,.3); }
+.tag-interest { background:rgba(0,212,170,.12); color:var(--accent2); border:1px solid rgba(0,212,170,.3); }
+.tag-warn { background:rgba(245,158,11,.12); color:var(--warn); border:1px solid rgba(245,158,11,.3); }
+
+/* STAT BOXES */
+.stat-row { display:flex; gap:12px; flex-wrap:wrap; margin-top:14px; }
+.stat-box { background:var(--surface2); border-radius:8px; padding:10px 14px; flex:1; min-width:100px; }
+.stat-box .label { font-size:10px; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; }
+.stat-box .value { font-size:20px; font-weight:700; margin-top:2px; }
+.stat-box .value.high { color:var(--accent2); }
+.stat-box .value.mid { color:var(--warn); }
+.stat-box .value.low { color:var(--accent3); }
+
+/* CHART CONTAINERS */
+.chart-wrap { position:relative; height:280px; }
+.chart-wrap canvas { max-height:280px; }
+
+/* TIMELINE */
+.timeline { display:flex; flex-direction:column; gap:12px; max-height:400px; overflow-y:auto; }
+.timeline::-webkit-scrollbar { width:4px; }
+.timeline::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+.tl-item { display:flex; gap:12px; align-items:flex-start; }
+.tl-dot { width:10px; height:10px; border-radius:50%; margin-top:5px; flex-shrink:0; }
+.tl-dot.test { background:var(--accent); }
+.tl-dot.counsel { background:var(--accent2); }
+.tl-content { flex:1; }
+.tl-date { font-size:11px; color:var(--text2); }
+.tl-title { font-size:13px; font-weight:600; margin:2px 0; }
+.tl-desc { font-size:12px; color:var(--text2); line-height:1.5; }
+
+/* PASTE MODE */
+.paste-area { width:100%; min-height:120px; background:var(--surface2); border:2px dashed var(--border); border-radius:8px; padding:12px; font-size:12px; color:var(--text); font-family:'Consolas',monospace; resize:vertical; outline:none; }
+.paste-area:focus { border-color:var(--accent); }
+.paste-area::placeholder { color:var(--text2); }
+
+/* TABS */
+.tabs { display:flex; gap:2px; margin-bottom:16px; background:var(--surface); border-radius:8px; padding:3px; border:1px solid var(--border); }
+.tab { padding:8px 16px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; color:var(--text2); transition:all .2s; border:none; background:none; font-family:inherit; }
+.tab.active { background:var(--accent); color:#fff; }
+.tab:hover:not(.active) { color:var(--text); background:var(--surface2); }
+
+/* EMPTY STATE */
+.empty { text-align:center; padding:60px 20px; color:var(--text2); }
+.empty-icon { font-size:48px; margin-bottom:12px; opacity:.4; }
+.empty p { font-size:14px; line-height:1.8; }
+
+/* SETTINGS MODAL */
+.modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:100; align-items:center; justify-content:center; }
+.modal-bg.show { display:flex; }
+.modal { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px; max-width:560px; width:90%; max-height:80vh; overflow-y:auto; }
+.modal h3 { font-size:16px; font-weight:700; margin-bottom:16px; }
+.modal label { display:block; font-size:12px; font-weight:600; color:var(--text2); margin-bottom:4px; margin-top:12px; }
+.modal input, .modal textarea { width:100%; background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:8px 12px; border-radius:8px; font-size:13px; font-family:inherit; outline:none; }
+.modal textarea { min-height:80px; resize:vertical; }
+.modal-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:20px; }
+
+/* LOADING */
+.loading { display:none; align-items:center; gap:8px; }
+.loading.show { display:flex; }
+.spinner { width:16px; height:16px; border:2px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .6s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* STUDENT-BU DATA */
+.sbu-box { background:var(--surface2); border-radius:8px; padding:14px; font-size:13px; line-height:1.8; color:var(--text); max-height:200px; overflow-y:auto; }
+
+/* PERSONALITY TABLE */
+.per-table { width:100%; border-collapse:collapse; font-size:12px; }
+.per-table th { background:var(--surface2); color:var(--text2); font-weight:600; padding:6px 10px; text-align:left; border-bottom:1px solid var(--border); font-size:11px; text-transform:uppercase; letter-spacing:.5px; }
+.per-table td { padding:7px 10px; border-bottom:1px solid var(--border); color:var(--text); vertical-align:middle; }
+.per-table tr:last-child td { border-bottom:none; }
+.per-table tbody tr:hover td { background:rgba(108,99,255,.06); }
+.per-badge { display:inline-block; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:700; }
+.per-high { background:rgba(0,212,170,.15); color:var(--accent2); }
+.per-vhigh { background:rgba(0,212,170,.25); color:var(--accent2); border:1px solid rgba(0,212,170,.4); }
+.per-mid  { background:rgba(108,99,255,.12); color:var(--accent); }
+.per-low  { background:rgba(245,158,11,.12); color:var(--warn); }
+.per-vlow { background:rgba(255,107,107,.15); color:var(--accent3); }
+/* 라이트모드 select/input */
+body.light-mode select, body.light-mode input[type=number], body.light-mode input[type=text] {
+  background: #fff !important; color: #1a1d27 !important; border-color: #d1d5e0 !important;
+}
+body.light-mode .paste-area { background:#fff !important; color:#1a1d27 !important; border-color:#d1d5e0 !important; }
+body.light-mode .tabs { background:#f0f2f7 !important; }
+body.light-mode .tab { color:#5a6075 !important; }
+body.light-mode .tab.active { background:var(--accent) !important; color:#fff !important; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 2026 창원경일고 인성적성진로자기주도 검사 결과</h1>
+  <div class="header-controls">
+  <input id="accessPw" type="password" placeholder="교사용 비밀번호" />
+  <input id="studentId" placeholder="학번 (예: 10101)" />
+  <button class="btn btn-primary" onclick="loadStudent()">조회</button>
+    <button class="btn btn-secondary" onclick="resetDashboard()" title="초기화">🔄 초기화</button>
+    <button class="btn btn-secondary" onclick="switchMode()">📋 직접입력</button>
+    <button class="btn btn-secondary no-print" id="themeBtn" onclick="toggleTheme()" title="다크/라이트 모드 전환">🌙</button>
+    <button class="btn btn-secondary no-print" onclick="savePDF()" title="PDF 저장">🖨️ PDF</button>
+  </div>
+</div>
+
+<div class="main">
+  <!-- MODE: EMPTY -->
+  <div id="emptyState" class="empty">
+    <div class="empty-icon">🔍</div>
+    <p>학번을 입력하고 <strong>조회</strong>를 클릭하세요.<br>
+    또는 <strong>📋 직접입력</strong>을 눌러 데이터를 붙여넣을 수 있습니다.</p>
+  </div>
+
+  <!-- MODE: PASTE -->
+  <div id="pasteMode" style="display:none;">
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title"><span>📋</span> 데이터 직접 입력</div>
+      <div class="tabs">
+        <button class="tab active" onclick="setTab(this,'json')">JSON (4종검사)</button>
+        <button class="tab" onclick="setTab(this,'sheet')">시트 데이터 (탭구분)</button>
+      </div>
+      <textarea id="pasteData" class="paste-area" placeholder="JSON 또는 시트에서 복사한 데이터를 여기에 붙여넣으세요..."></textarea>
+
+      <!-- 자기주도학습 직접 입력 -->
+      <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px;">
+        <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:10px;letter-spacing:.5px;">📐 자기주도학습검사 점수 (직접 입력)</div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">
+          <div>
+            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습계획</label>
+            <input type="number" id="sdl_plan" min="0" max="80" placeholder="0~80"
+              style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습실행</label>
+            <input type="number" id="sdl_exec" min="0" max="80" placeholder="0~80"
+              style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습평가</label>
+            <input type="number" id="sdl_eval" min="0" max="80" placeholder="0~80"
+              style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습효능감</label>
+            <input type="number" id="sdl_eff" min="0" max="80" placeholder="0~80"
+              style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습메타인지</label>
+            <input type="number" id="sdl_meta" min="0" max="80" placeholder="0~80"
+              style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
+          </div>
+        </div>
+      </div>
+
+      <!-- 인성검사 직접 입력 -->
+      <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px;">
+        <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:10px;letter-spacing:.5px;">🧬 인성검사 결과 (직접 입력)</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+          <div>
+            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">외향성</label>
+            <select id="per_ext" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
+              <option value="">선택</option><option>매우낮음</option><option>낮음</option><option>보통</option><option>높음</option><option>매우높음</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">우호성</label>
+            <select id="per_agr" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
+              <option value="">선택</option><option>매우낮음</option><option>낮음</option><option>보통</option><option>높음</option><option>매우높음</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">성실성</label>
+            <select id="per_con" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
+              <option value="">선택</option><option>매우낮음</option><option>낮음</option><option>보통</option><option>높음</option><option>매우높음</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">개방성</label>
+            <select id="per_ope" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
+              <option value="">선택</option><option>매우낮음</option><option>낮음</option><option>보통</option><option>높음</option><option>매우높음</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">정서적안정</label>
+            <select id="per_neu" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
+              <option value="">선택</option><option>매우낮음</option><option>낮음</option><option>보통</option><option>높음</option><option>매우높음</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학교적응</label>
+            <select id="per_ssat" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
+              <option value="">선택</option><option>매우낮음</option><option>낮음</option><option>보통</option><option>높음</option><option>매우높음</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">사회적응</label>
+            <select id="per_sadp" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
+              <option value="">선택</option><option>매우낮음</option><option>낮음</option><option>보통</option><option>높음</option><option>매우높음</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">또래관계</label>
+            <select id="per_peer" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
+              <option value="">선택</option><option>매우나쁨</option><option>나쁨</option><option>보통</option><option>좋음</option><option>매우좋음</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학업수준</label>
+            <select id="per_grade" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
+              <option value="">선택</option><option>매우낮음</option><option>낮음</option><option>보통</option><option>높음</option><option>매우높음</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
+          <div>
+            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">선호과목</label>
+            <input type="text" id="per_fav" placeholder="예: 수학"
+              style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">비선호과목</label>
+            <input type="text" id="per_bad" placeholder="예: 영어"
+              style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:14px;align-items:center;">
+        <button class="btn btn-green" onclick="parsePastedData()">✅ 분석 시작</button>
+        <button class="btn btn-secondary" onclick="loadSampleData()">📦 샘플 데이터로 테스트</button>
+        <button class="btn btn-secondary" onclick="goBack()">← 뒤로가기</button>
+        <div id="pasteLoading" class="loading"><div class="spinner"></div><span style="font-size:12px;color:var(--text2);">파싱 중...</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboard" style="display:none;">
+
+    <!-- ① PROFILE -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="profile">
+        <div class="profile-avatar" id="avatar">?</div>
+        <div class="profile-info">
+          <h2 id="pName">-</h2>
+          <p id="pMeta">-</p>
+          <div class="profile-tags" id="pTags"></div>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-secondary no-print" onclick="exportForAI()">🤖 진로성장리포트 생성</button>
+        </div>
+      </div>
+      <div class="stat-row" id="statRow"></div>
+    </div>
+
+    <!-- ② 적성검사 -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title"><span>🎯</span> 적성능력 검사</div>
+      <div id="aptitudeSection">
+        <!-- 차트(좌) + 수치표(우) -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+          <div class="chart-wrap" style="height:300px;"><canvas id="barAptitude"></canvas></div>
+          <div id="aptitudeTable"></div>
+        </div>
+        <!-- 추천직업 -->
+        <div id="aptitudeJobs" style="margin-top:14px;"></div>
+      </div>
+    </div>
+
+    <!-- ③ 흥미유형 -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title"><span>🎨</span> 흥미유형 (Holland)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+        <div class="chart-wrap" style="height:300px;"><canvas id="radarHolland"></canvas></div>
+        <div id="interestDetail"></div>
+      </div>
+      <div id="interestJobs" style="margin-top:14px;"></div>
+    </div>
+
+    <!-- ④ 성격특성 (인성검사) -->
+    <div class="card" style="margin-bottom:16px;" id="personalitySection">
+      <div class="card-title"><span>🧠</span> 성격특성 (Big5 인성검사)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.5px;margin-bottom:10px;">● 성격 5요인</div>
+          <div id="big5Bars"></div>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.5px;margin-bottom:10px;">● 희망 / 선호</div>
+          <div id="personalityExtra"></div>
+          <div style="font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.5px;margin:14px 0 10px;">● 학교생활 적응</div>
+          <div id="schoolAdapt"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑤ 진로성숙도 & 진로장벽 -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title"><span>🗺️</span> 진로성숙도 &amp; 진로장벽</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.5px;margin-bottom:10px;">● 진로성숙도</div>
+          <div id="careerMaturityBars"></div>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.5px;margin-bottom:10px;">● 진로장벽</div>
+          <div id="careerBarrierBars"></div>
+        </div>
+      </div>
+      <div id="careerThought" style="margin-top:14px;"></div>
+    </div>
+
+    <!-- ⑥ 자기주도학습 -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title"><span>📚</span> 자기주도학습 분석
+        <button class="btn btn-secondary no-print" id="sdlEditBtn" onclick="toggleSdlEdit()" style="margin-left:auto;padding:3px 10px;font-size:11px;">✏️ 점수 입력</button>
+      </div>
+      <!-- SDL 인라인 입력 패널 -->
+      <div id="sdlEditPanel" style="display:none;margin-bottom:14px;background:var(--surface2);border-radius:8px;padding:12px;">
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:8px;">
+          <div><label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습계획</label>
+            <input type="number" id="db_sdl_plan" min="0" max="80" placeholder="0~80" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:5px 7px;border-radius:5px;font-size:13px;font-family:inherit;outline:none;"></div>
+          <div><label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습실행</label>
+            <input type="number" id="db_sdl_exec" min="0" max="80" placeholder="0~80" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:5px 7px;border-radius:5px;font-size:13px;font-family:inherit;outline:none;"></div>
+          <div><label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습평가</label>
+            <input type="number" id="db_sdl_eval" min="0" max="80" placeholder="0~80" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:5px 7px;border-radius:5px;font-size:13px;font-family:inherit;outline:none;"></div>
+          <div><label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습효능감</label>
+            <input type="number" id="db_sdl_eff" min="0" max="80" placeholder="0~80" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:5px 7px;border-radius:5px;font-size:13px;font-family:inherit;outline:none;"></div>
+          <div><label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습메타인지</label>
+            <input type="number" id="db_sdl_meta" min="0" max="80" placeholder="0~80" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:5px 7px;border-radius:5px;font-size:13px;font-family:inherit;outline:none;"></div>
+        </div>
+        <button class="btn btn-green" onclick="applySdlInput()" style="font-size:12px;padding:6px 14px;">✅ 적용</button>
+      </div>
+      <!-- SDL 차트 + 영역별 점수표 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+        <div class="chart-wrap" style="height:280px;"><canvas id="radarSelf"></canvas></div>
+        <div id="sdlScoreTable"></div>
+      </div>
+      <!-- 영역별 서술 해석문 -->
+      <div id="sdlInterpretations" style="margin-top:16px;"></div>
+      <!-- 학습 강점/약점 -->
+      <div id="sdlStrengthWeak" style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px;"></div>
+      <!-- 생기부 참고문장 -->
+      <div id="sdlSbuText" style="margin-top:12px;"></div>
+    </div>
+
+    <!-- ⑧ 학생부 기재 데이터 -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title"><span>📄</span> 학생부 기재 데이터</div>
+      <div class="sbu-box" id="sbuData">학생부 데이터가 없습니다.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-bg" id="settingsModal">
+  <div class="modal">
+    <h3>⚙️ 대시보드 설정</h3>
+    <label>GAS 웹앱 URL</label>
+    <input id="setGasUrl" placeholder="https://script.google.com/macros/s/.../exec" />
+    <p style="font-size:11px;color:var(--text2);margin-top:4px;">구글 스프레드시트의 Apps Script에서 배포한 웹앱 URL</p>
+    <label>Claude API Key (선택)</label>
+    <input id="setApiKey" type="password" placeholder="sk-ant-..." />
+    <p style="font-size:11px;color:var(--text2);margin-top:4px;">AI 성장 리포트 자동 생성에 사용. 입력하지 않아도 수동 복사로 사용 가능</p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeSettings()">취소</button>
+      <button class="btn btn-primary" onclick="saveSettings()">저장</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============ 기본 설정 ============
+const GAS_URL = "https://script.google.com/macros/s/AKfycbyHuyDqAU6tyUKl8b9qd_Yt7x4_WC8ZAiIGK7xmGIWoUHQH4BjszbxjEtHFk5FUzmLa/exec";
+// ============ STATE ============
+let currentStudent = null;
+let currentData = [];
+let pasteType = 'json';
+let charts = {};
+let isDark = true;
+
+// ============ THEME ============
+function toggleTheme() {
+  isDark = !isDark;
+  document.body.classList.toggle('light-mode', !isDark);
+  document.getElementById('themeBtn').textContent = isDark ? '🌙' : '☀️';
+  localStorage.setItem('dash_theme', isDark ? 'dark' : 'light');
+  // 차트 색상 업데이트
+  if(currentStudent) {
+    const gridCol = isDark ? '#2e3347' : '#e2e5ef';
+    const tickCol = isDark ? '#8b90a5' : '#5a6075';
+    const labelCol = isDark ? '#e4e7f1' : '#1a1d27';
+    Object.values(charts).forEach(ch => {
+      if(!ch?.options) return;
+      const sc = ch.options.scales || {};
+      ['x','y','r'].forEach(k => {
+        if(!sc[k]) return;
+        if(sc[k].grid) sc[k].grid.color = gridCol;
+        if(sc[k].ticks) sc[k].ticks.color = tickCol;
+        if(sc[k].pointLabels) sc[k].pointLabels.color = labelCol;
+      });
+      if(ch.options.plugins?.legend?.labels) ch.options.plugins.legend.labels.color = labelCol;
+      ch.update();
+    });
+  }
+}
+
+// ============ PDF SAVE ============
+function savePDF() {
+  const wasLight = document.body.classList.contains('light-mode');
+  // PDF는 항상 라이트모드로 출력
+  if(!wasLight) {
+    document.body.classList.add('light-mode');
+  }
+  // 파일명을 학번_이름으로 설정 (브라우저 PDF 저장 시 기본 파일명)
+  const origTitle = document.title;
+  if(currentStudent?.student) {
+    const s = currentStudent.student;
+    document.title = `${s.id}_${s.name}_진로상담`;
+  }
+  setTimeout(() => {
+    window.print();
+    document.title = origTitle;
+    if(!wasLight) {
+      document.body.classList.remove('light-mode');
+    }
+  }, 300);
+}
+
+// ============ SETTINGS ============
+function openSettings() {
+  document.getElementById('setGasUrl').value = localStorage.getItem('dash_gas_url') || '';
+  document.getElementById('setApiKey').value = localStorage.getItem('dash_api_key') || '';
+  document.getElementById('settingsModal').classList.add('show');
+}
+function closeSettings() { document.getElementById('settingsModal').classList.remove('show'); }
+function saveSettings() {
+  const url = document.getElementById('setGasUrl').value.trim();
+  const key = document.getElementById('setApiKey').value.trim();
+  if(url) { localStorage.setItem('dash_gas_url', url); document.getElementById('gasUrl').value = url; }
+  if(key) localStorage.setItem('dash_api_key', key);
+  closeSettings();
+  alert('설정이 저장되었습니다.');
+}
+
+// ============ 이세민 학생 데이터 (10215) ============
+const STUDENT_10215 = {
+  student: { id: "10215", grade: 1, cls: 2, num: 15, name: "이세민" },
+  aptitude: {
+    scores: [
+      { name: "언어력",     score: 112, level: "상" },
+      { name: "수리력",     score: 118, level: "상" },
+      { name: "추리력",     score: 124, level: "최상" },
+      { name: "공간능력",   score: 128, level: "최상" },
+      { name: "지각속도",   score: 96,  level: "중하" },
+      { name: "과학능력",   score: 122, level: "최상" },
+      { name: "집중능력",   score: 120, level: "최상" },
+      { name: "색채능력",   score: 109, level: "중상" },
+      { name: "사고유연성", score: 118, level: "상" }
+    ],
+    jobs: ["기계공학기술자", "전문의사", "한의사", "응급구조사", "관제사"]
+  },
+  personality: {
+    ext: "낮음", agr: "매우낮음", con: "낮음", ope: "높음", neu: "높음",
+    ssat: "", sadp: "", peer: "", grade: "",
+    fav: "기술", bad: "한문",
+    dept: "건축/토목/도시공학, 정치학",
+    job: "건축가 및 건축공학기술자, 항해사"
+  },
+  interest: {
+    code1: "A (예술형)", code2: "I (탐구형)",
+    types: [
+      { code: "R", name: "현실형", t: 51, lv: "보통" },
+      { code: "I", name: "탐구형", t: 54, lv: "보통" },
+      { code: "A", name: "예술형", t: 56, lv: "보통" },
+      { code: "S", name: "사회형", t: 38, lv: "낮음" },
+      { code: "E", name: "진취형", t: 51, lv: "보통" },
+      { code: "C", name: "관습형", t: 49, lv: "보통" }
+    ],
+    hi: "음악, 미술, 문학",
+    lo: "사회안전, 사회",
+    jobs: "패션소품 디자이너, 게임시나리오작가, 마술사, 서예가, 속옷디자이너, 시인, 아트컨설턴트, 작사가, 조향사, 평론가, UX/UI 디자이너, 만화가, 방송작가, 소설가, 안무가, 영상그래픽 디자이너, 영화시나리오작가, 의상디자이너, 작곡가, 제품디자이너, 학예사, 화가, 만화영화작가"
+  },
+  career: {
+    cm: {
+      t: 52, lv: "보통",
+      subs: [
+        { name: "계획성",       sc: 50, lv: "보통" },
+        { name: "독립성",       sc: 56, lv: "보통" },
+        { name: "일에 대한 태도", sc: 57, lv: "보통" },
+        { name: "자기이해",     sc: 49, lv: "보통" },
+        { name: "직업정보이해", sc: 55, lv: "보통" },
+        { name: "진로탐색행동", sc: 51, lv: "보통" }
+      ]
+    },
+    cd: {
+      sc: 51, lv: "보통",
+      subs: [
+        { name: "진로유연성",   sc: 58, lv: "보통" },
+        { name: "진로개방성",   sc: 53, lv: "보통" },
+        { name: "심리적독립",   sc: 44, lv: "보통" },
+        { name: "자기이해부족", sc: 51, lv: "보통" },
+        { name: "직업정보부족", sc: 45, lv: "보통" },
+        { name: "자기갈등",     sc: 41, lv: "보통" },
+        { name: "관계갈등",     sc: 49, lv: "보통" },
+        { name: "환경갈등",     sc: 38, lv: "낮음" }
+      ]
+    },
+    thought: "나와 비슷하게 나온 것 같아 신기하다.",
+    plan: "좀 더 적극적으로 진로를 찾아봐야겠다."
+  },
+  selfDirected: {
+    학습계획:    41,
+    학습실행:    43,
+    학습평가:    50,
+    학습효능감:  44,
+    학습메타인지: 46
+  },
+  sbuText: `자기주도학습검사(2026.04.17) 결과를 보면, 학습계획 영역에서 보통 이상의 역량을 발휘하였음. 더불어 학생이 목표를 명확히 설정하고 그에 따라 체계적인 계획을 수립해온 점이 돋보임. 구체적으로 시간을 효율적으로 관리하며, 장기적인 학습 계획을 수립하여 지속적으로 실행해 왔음. 이러한 성과는 학습과정의 효과적인 관리와 계획 수립 능력에서 드러나며, 학습 목표를 달성하는 데 긍정적인 영향을 미쳐왔음.`,
+  counseling: [
+    { date: "2026-04-17", type: "검사", title: "5종 검사 실시", desc: "적성·인성·흥미·진로성숙도·자기주도학습 검사 완료" }
+  ]
+};
+
+// ============ INIT ============
+window.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('dash_theme');
+
+  if(savedTheme === 'light') {
+    isDark = false;
+    document.body.classList.add('light-mode');
+    document.getElementById('themeBtn').textContent = '☀️';
+  }
+
+  document.getElementById('studentId').addEventListener('keydown', e => {
+    if(e.key === 'Enter') loadStudent();
+  });
+
+  document.getElementById('accessPw').addEventListener('keydown', e => {
+    if(e.key === 'Enter') loadStudent();
+  });
+});
+
+// ============ SDL 인라인 입력 ============
+function toggleSdlEdit() {
+  const panel = document.getElementById('sdlEditPanel');
+  const isHidden = panel.style.display === 'none';
+  panel.style.display = isHidden ? 'block' : 'none';
+  document.getElementById('sdlEditBtn').textContent = isHidden ? '✖ 닫기' : '✏️ 점수 입력';
+  // 기존 값이 있으면 입력란에 채워줌
+  if(isHidden && currentStudent?.selfDirected) {
+    const sd = currentStudent.selfDirected;
+    const map = { db_sdl_plan:'학습계획', db_sdl_exec:'학습실행', db_sdl_eval:'학습평가', db_sdl_eff:'학습효능감', db_sdl_meta:'학습메타인지' };
+    Object.entries(map).forEach(([id, key]) => {
+      const el = document.getElementById(id);
+      if(el && sd[key]) el.value = sd[key];
+    });
+  }
+}
+
+function applySdlInput() {
+  if(!currentStudent) return;
+  const vals = {
+    학습계획:    +document.getElementById('db_sdl_plan').value  || 0,
+    학습실행:    +document.getElementById('db_sdl_exec').value  || 0,
+    학습평가:    +document.getElementById('db_sdl_eval').value  || 0,
+    학습효능감:  +document.getElementById('db_sdl_eff').value   || 0,
+    학습메타인지:+document.getElementById('db_sdl_meta').value  || 0
+  };
+  if(!Object.values(vals).some(v => v > 0)) return alert('점수를 입력하세요.');
+  currentStudent.selfDirected = vals;
+  renderSDL(vals, currentStudent.sbuText || '', currentStudent.sdlNarrative || {});
+  // stat-row 갱신
+  const statRow = document.getElementById('statRow');
+  const existing = statRow.querySelector('[data-key="sdl"]');
+  const sdVals = Object.values(vals).filter(v => v > 0);
+  const avg = Math.round(sdVals.reduce((a,b)=>a+b,0) / sdVals.length);
+  if(existing) {
+    existing.querySelector('.value').textContent = avg + '점';
+  } else {
+    const box = document.createElement('div');
+    box.className = 'stat-box'; box.dataset.key = 'sdl';
+    box.innerHTML = `<div class="label">자기주도 평균</div><div class="value ${avg>=55?'high':avg>=40?'mid':'low'}">${avg}점</div>`;
+    statRow.insertBefore(box, statRow.firstChild);
+  }
+  document.getElementById('sdlEditPanel').style.display = 'none';
+  document.getElementById('sdlEditBtn').textContent = '✏️ 점수 입력';
+}
+
+// ============ MODE SWITCH ============
+function resetDashboard() {
+  currentStudent = null;
+  document.getElementById('studentId').value = '';
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('pasteMode').style.display = 'none';
+  document.getElementById('emptyState').style.display = 'block';
+  // 차트 초기화
+  Object.keys(charts).forEach(k => { if(charts[k]) { charts[k].destroy(); delete charts[k]; } });
+}
+
+function switchMode() {
+  const paste = document.getElementById('pasteMode');
+  const empty = document.getElementById('emptyState');
+  const dash = document.getElementById('dashboard');
+  if(paste.style.display === 'none') {
+    // 직접입력 모드로 전환 — 이전 상태 기억
+    window._prevMode = dash.style.display === 'block' ? 'dashboard' : 'empty';
+    paste.style.display = 'block'; empty.style.display = 'none'; dash.style.display = 'none';
+  } else {
+    goBack();
+  }
+}
+function goBack() {
+  const paste = document.getElementById('pasteMode');
+  const empty = document.getElementById('emptyState');
+  const dash = document.getElementById('dashboard');
+  paste.style.display = 'none';
+  if(window._prevMode === 'dashboard' || currentStudent) {
+    dash.style.display = 'block'; empty.style.display = 'none';
+  } else {
+    empty.style.display = 'block'; dash.style.display = 'none';
+  }
+}
+function setTab(el, type) {
+  pasteType = type;
+  el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('pasteData').placeholder = type === 'json'
+    ? 'JSON 데이터를 붙여넣으세요...\n예: {"aptitude":{...},"personality":{...},"interest":{...},"career":{...}}'
+    : '구글시트 AUTO_DB에서 복사한 데이터를 붙여넣으세요 (탭으로 구분된 행 데이터)';
+}
+
+// ============ SAMPLE DATA ============
+function loadSampleData() {
+  const sample = {
+    student: { id: "10101", grade: 1, cls: 1, num: 1, name: "권범준" },
+    aptitude: { scores: [
+      {name:"언어력",score:95,level:"중하"},{name:"수리력",score:124,level:"최상"},{name:"추리력",score:144,level:"최상"},
+      {name:"공간능력",score:113,level:"상"},{name:"지각속도",score:105,level:"중상"},{name:"과학능력",score:131,level:"최상"},
+      {name:"집중능력",score:113,level:"상"},{name:"색채능력",score:98,level:"중하"},{name:"사고유연성",score:109,level:"중상"}
+    ], jobs:["기계공학기술자","응급구조사","전문의사","중등학교교사","중등학교교사_자연계열"]},
+    personality: {ext:"보통",agr:"낮음",con:"높음",ope:"높음",neu:"높음",ssat:"보통",sadp:"보통",peer:"매우좋음",grade:"매우높음",fav:"음악",bad:"영어",dept:"공대쪽",job:"발명가"},
+    interest: {code1:"A (예술형)",code2:"I (탐구형)",types:[
+      {code:"R",name:"현실형",t:33,lv:"최하"},{code:"I",name:"탐구형",t:50,lv:"중상"},{code:"A",name:"예술형",t:62,lv:"상"},
+      {code:"S",name:"사회형",t:44,lv:"중하"},{code:"E",name:"진취형",t:49,lv:"중하"},{code:"C",name:"관습형",t:48,lv:"중하"}
+    ],hi:"음악",lo:"사회안전",jobs:"작사가, 디자이너, 안무가, 의상디자이너, 화가"},
+    career: {
+      cm:{t:53,lv:"보통",subs:[{name:"계획성",sc:61,lv:"높음"},{name:"독립성",sc:56,lv:"보통"},{name:"일에 대한 태도",sc:63,lv:"높음"},{name:"자기이해",sc:60,lv:"보통"},{name:"직업정보이해",sc:52,lv:"보통"},{name:"진로탐색행동",sc:47,lv:"보통"}]},
+      cd:{sc:55,lv:"보통",subs:[{name:"진로유연성",sc:40,lv:"보통"},{name:"진로개방성",sc:44,lv:"보통"},{name:"심리적독립",sc:43,lv:"보통"},{name:"자기이해 부족",sc:41,lv:"보통"},{name:"직업정보 부족",sc:48,lv:"보통"},{name:"자기갈등",sc:57,lv:"보통"},{name:"관계갈등",sc:64,lv:"높음"},{name:"환경갈등",sc:54,lv:"보통"}]},
+      thought:"나하고 잘 맞는것 같다",plan:"좀더 다양한 분야에서 내 스스로 발전을 이뤄야겠다"
+    },
+    selfDirected: {학습계획:67,학습실행:72,학습평가:68,학습효능감:67,학습메타인지:68},
+    sdlNarrative: {
+      학습계획: "학습 목표 설정은 어느 정도 가능하지만, 계획을 지속적으로 실행하기 위한 외부 지원이 도움이 될 수 있습니다.",
+      학습실행: "수립한 계획을 꾸준히 실행하는 능력이 우수합니다. 목표에 압도되지 않고 효율적으로 학습을 이어나갑니다.",
+      학습평가: "학습 진행 상황을 어느 정도 평가할 수 있지만, 계획 조정에 외부 도움이 필요하며 더 깊은 자기 성찰이 요구됩니다.",
+      학습효능감: "학습 능력에 어느 정도 자신감이 있으나, 새로운 상황에서 불확실성을 느끼며 격려와 지지가 도움이 됩니다.",
+      학습메타인지: "학습을 모니터링하고 전략을 어느 정도 조정할 수 있으나, 개선 영역 발견과 깊은 성찰에는 외부 도움이 유용합니다.",
+      학습강점: "학습계획, 학습실행, 학습평가, 학습효능감, 학습메타인지",
+      학습약점: "해당 없음",
+      종합의견: "자기주도학습검사(2026.04.14)를 통해 자기주도적 학습의 전체 수준을 확인하였음. 그 결과, 학습 목표를 달성하기 위한 계획을 개발하는 능력인 학습계획, 학습계획을 효과적으로 구현하고 수행하는 학습 실천 능력, 학습진행을 스스로 돌아보고 성찰하고 개선하는 학습평가, 학습과 관련된 과제를 성공적으로 완료하거나 목표를 달성할 수 있다는 학습자의 믿음, 학습 과정을 반성하고 진행 상황을 모니터링하며 필요에 따라 전략을 조정하는 학습자의 능력인 학습메타인지 영역에서 높게 나타나는 성향을 보임"
+    },
+    sbuText: "자기주도검사(2026.04.14) 결과에 따르면, 학습계획 및 학습실행 영역에서는 계획을 체계적으로 수립하고 이를 실천으로 옮기는 능력이 두드러지게 나타남.",
+    counseling: [
+      {date:"2026-04-14",type:"검사",title:"5종 검사 실시",desc:"적성·인성·흥미·진로발달·자기주도 검사 완료"},
+      {date:"2026-05-15",type:"상담",title:"1차 진로면담",desc:"공학+예술 융합 진로 탐색. 기계공학+디자인 이중전공 관심"},
+      {date:"2026-09-10",type:"상담",title:"2차 학습전략 상담",desc:"주간 학습 계획표 작성 시작. 수리·과학 심화 학습 방향 설정"}
+    ]
+  };
+  renderDashboard(sample);
+}
+
+// ============ LOAD FROM GAS ============
+async function loadStudent() {
+  const url = GAS_URL;
+  const sid = document.getElementById('studentId').value.trim();
+  const pw = document.getElementById('accessPw').value.trim();
+
+  if (!pw) return alert('교사용 비밀번호를 입력하세요.');
+  if (!sid) return alert('학번을 입력하세요.');
+
+  try {
+    const res = await fetch(
+      `${url}?action=getStudent&id=${encodeURIComponent(sid)}&pw=${encodeURIComponent(pw)}`
+    );
+
+    const data = await res.json();
+
+    if (data.error) return alert(data.error);
+
+    renderDashboard(data);
+  } catch(e) {
+    alert('데이터 로드 실패: ' + e.message);
+  }
+}
+
+// ============ PARSE PASTED DATA ============
+function parsePastedData() {
+  const raw = document.getElementById('pasteData').value.trim();
+
+  // 자기주도학습 직접입력 수집
+  const sdlInputs = {
+    학습계획:   +document.getElementById('sdl_plan').value  || 0,
+    학습실행:   +document.getElementById('sdl_exec').value  || 0,
+    학습평가:   +document.getElementById('sdl_eval').value  || 0,
+    학습효능감: +document.getElementById('sdl_eff').value   || 0,
+    학습메타인지:+document.getElementById('sdl_meta').value || 0
+  };
+  const hasSdl = Object.values(sdlInputs).some(v => v > 0);
+
+  // JSON이 비어있지만 SDL 점수가 있고 기존 학생 데이터가 있으면 → SDL만 업데이트
+  if(!raw && hasSdl && currentStudent) {
+    currentStudent.selfDirected = sdlInputs;
+    renderDashboard(currentStudent);
+    return;
+  }
+  if(!raw) return alert('데이터를 붙여넣으세요.');
+
+  // 인성검사 직접입력 수집
+  const perInputs = {
+    ext:  document.getElementById('per_ext').value,
+    agr:  document.getElementById('per_agr').value,
+    con:  document.getElementById('per_con').value,
+    ope:  document.getElementById('per_ope').value,
+    neu:  document.getElementById('per_neu').value,
+    ssat: document.getElementById('per_ssat').value,
+    sadp: document.getElementById('per_sadp').value,
+    peer: document.getElementById('per_peer').value,
+    grade:document.getElementById('per_grade').value,
+    fav:  document.getElementById('per_fav').value.trim(),
+    bad:  document.getElementById('per_bad').value.trim()
+  };
+  const hasper = Object.values(perInputs).some(v => v);
+
+  try {
+    let mapped;
+    if(pasteType === 'json') {
+      const d = JSON.parse(raw);
+      const student = d.student || { id: "00000", grade: 1, cls: 0, num: 0, name: "학생" };
+      mapped = {
+        student: { id: student.id || "00000", grade: student.grade || 1, cls: student.cls || 0, num: student.num || 0, name: student.name || "학생" },
+        aptitude: d.aptitude || null,
+        personality: d.personality || null,
+        interest: d.interest || null,
+        career: d.career || null,
+        selfDirected: d.selfDirected || null,
+        sdlNarrative: d.sdlNarrative || {},
+        sbuText: d.sbuText || "",
+        counseling: d.counseling || []
+      };
+    } else {
+      const lines = raw.split('\n').filter(l => l.trim());
+      mapped = parseSheetData(lines);
+    }
+
+    // 자기주도 직접입력 병합 (기존 데이터 없으면 대체, 있어도 직접입력 우선)
+    if(hasSdl) mapped.selfDirected = sdlInputs;
+
+    // 인성 직접입력 병합
+    if(hasper) {
+      mapped.personality = mapped.personality || {};
+      Object.entries(perInputs).forEach(([k,v]) => { if(v) mapped.personality[k] = v; });
+    }
+
+    renderDashboard(mapped);
+  } catch(e) { alert('파싱 오류: ' + e.message); }
+}
+
+function parseSheetData(lines) {
+  // Expect AUTO_DB format: 학번|학년|반|번호|이름|날짜|자료유형|항목|값|수준|요약
+  const data = {
+    student: {}, aptitude: { scores: [], jobs: [] }, personality: {},
+    interest: { types: [], code1: '', code2: '', hi: '', lo: '', jobs: '' },
+    career: { cm: { t: 0, lv: '', subs: [] }, cd: { sc: 0, lv: '', subs: [] }, thought: '', plan: '' },
+    selfDirected: {}, sdlNarrative: {}, counseling: [], sbuText: ""
+  };
+  const sdKeys = new Set(['학습계획','학습실행','학습평가','학습효능감','학습메타인지']);
+  const aptNames = new Set(["언어력","수리력","추리력","공간능력","지각속도","과학능력","집중능력","색채능력","사고유연성"]);
+  // 흥미 항목: "현실형(R)", "탐구형(I)" 등 → code 추출
+  const hollandCode = { '현실형': 'R', '탐구형': 'I', '예술형': 'A', '사회형': 'S', '진취형': 'E', '관습형': 'C' };
+  const pKeyMap = {'외향성':'ext','우호성':'agr','성실성':'con','개방성':'ope','정서적안정':'neu','학교적응':'ssat','사회적응':'sadp','또래관계':'peer','학업수준':'grade'};
+
+  for(const line of lines) {
+    const cols = line.split('\t');
+    if(cols.length < 8) continue;
+    const [sid, grade, cls, num, name, date, type, item, val, level, summary] = cols;
+    const itemT = (item || '').trim();
+    const valT  = (val  || '').trim();
+    const lvT   = (level|| '').trim();
+
+    if(!data.student.id && sid && sid.trim()) {
+      data.student = { id: sid.trim(), grade: +grade, cls: +cls, num: +num, name: (name||'').trim() };
+    }
+
+    switch(type?.trim()) {
+      case '적성':
+        if(aptNames.has(itemT)) {
+          data.aptitude.scores.push({ name: itemT, score: +valT, level: lvT });
+        } else if(itemT === '추천직업') {
+          data.aptitude.jobs = valT.split(',').map(s => s.trim()).filter(Boolean);
+        }
+        break;
+
+      case '흥미': {
+        // "현실형(R)" 형태 파싱
+        const codeMatch = itemT.match(/\(([A-Z])\)/);
+        const nameBase  = itemT.replace(/\s*\([A-Z]\)/, '').trim();
+        if(codeMatch) {
+          const code = codeMatch[1];
+          // 중복 방지
+          if(!data.interest.types.find(t => t.code === code)) {
+            data.interest.types.push({ code, name: nameBase, t: +valT, lv: lvT });
+          }
+        } else if(itemT === '1순위코드')        data.interest.code1 = valT;
+        else if(itemT === '2순위코드')           data.interest.code2 = valT;
+        else if(itemT === '가장높은흥미분야')    data.interest.hi    = valT;
+        else if(itemT === '가장낮은흥미분야')    data.interest.lo    = valT;
+        else if(itemT === '흥미추천직업')        data.interest.jobs  = valT;
+        break;
+      }
+
+      case '자기주도':
+        if(sdKeys.has(itemT)) data.selfDirected[itemT] = +valT;
+        else if(itemT === '학생부데이터') data.sbuText = valT;
+        break;
+
+      case '인성':
+        if(pKeyMap[itemT])          data.personality[pKeyMap[itemT]] = lvT || valT;
+        else if(itemT === '선호과목')   data.personality.fav  = valT;
+        else if(itemT === '비선호과목') data.personality.bad  = valT;
+        else if(itemT === '희망계열')   data.personality.dept = valT;
+        else if(itemT === '희망직업')   data.personality.job  = valT;
+        break;
+
+      case '진로성숙도':
+        if(itemT === '종합') { data.career.cm.t = valT; data.career.cm.lv = lvT; }
+        else data.career.cm.subs.push({ name: itemT, sc: +valT, lv: lvT });
+        break;
+
+      case '진로결정':
+        if(itemT === '종합') { data.career.cd.sc = valT; data.career.cd.lv = lvT; }
+        else data.career.cd.subs.push({ name: itemT, sc: +valT, lv: lvT });
+        break;
+
+      case '진로발달':
+        if(itemT === '진로에대한생각') data.career.thought = valT;
+        else if(itemT === '노력할점')  data.career.plan    = valT;
+        break;
+
+      case '상담':
+        data.counseling.push({ date: (date||'').trim(), type: '상담', title: itemT, desc: (summary||valT||'').trim() });
+        break;
+    }
+  }
+  return data;
+}
+
+// ============ RENDER DASHBOARD ============
+function renderDashboard(d) {
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('pasteMode').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  currentStudent = d;
+
+  const s = d.student || {};
+  document.getElementById('avatar').textContent = (s.name || '?')[0];
+  document.getElementById('pName').textContent = s.name || '-';
+  document.getElementById('pMeta').textContent = `${s.grade || '-'}학년 ${s.cls || '-'}반 ${s.num || '-'}번 | 학번: ${s.id || '-'}`;
+
+  // Tags
+  const tags = document.getElementById('pTags');
+  tags.innerHTML = '';
+  if(d.interest?.code1) addTag(tags, d.interest.code1, 'tag-interest');
+  if(d.personality?.dept) addTag(tags, '희망계열: ' + d.personality.dept, 'tag-type');
+  if(d.personality?.job) addTag(tags, '희망직업: ' + d.personality.job, 'tag-type');
+  if(d.aptitude?.jobs?.length) d.aptitude.jobs.slice(0,3).forEach(j => j && addTag(tags, '추천: '+j.trim(), 'tag-interest'));
+  const sd = d.selfDirected || {};
+  const sdHasData = Object.values(sd).some(v => v > 0);
+
+  // Stats
+  const statRow = document.getElementById('statRow');
+  statRow.innerHTML = '';
+  const sdVals = Object.values(sd).filter(v=>v>0);
+  if(sdVals.length>0){const avg=Math.round(sdVals.reduce((a,b)=>a+b,0)/sdVals.length);addStat(statRow,'자기주도 평균',avg+'점',avg>=55?'high':avg>=40?'mid':'low');}
+  if(d.career?.cm?.t) addStat(statRow,'진로성숙도',d.career.cm.t+'점',+d.career.cm.t>=55?'high':+d.career.cm.t>=40?'mid':'low');
+  if(d.aptitude?.scores?.length){const maxApt=d.aptitude.scores.reduce((a,b)=>+a.score>+b.score?a:b);addStat(statRow,'최고 적성',maxApt.name,'high');}
+  if(d.interest?.code1) addStat(statRow,'1순위 흥미',d.interest.code1.split(' ')[0],'high');
+  if(d.personality?.peer) addStat(statRow,'또래관계',d.personality.peer,'high');
+
+  // Render all sections
+  renderAptitude(d.aptitude || {});
+  renderInterest(d.interest || {});
+  renderPersonality(d.personality || {});
+  renderCareer(d.career || {});
+  renderSDL(sd, d.sbuText || '', d.sdlNarrative || {});
+  document.getElementById('sbuData').textContent = d.sbuText || '학생부 데이터가 없습니다.';
+}
+
+// ============ HELPERS ============
+function addTag(container, text, cls) {
+  const t = document.createElement('span');
+  t.className = 'tag ' + cls; t.textContent = text; container.appendChild(t);
+}
+function addStat(container, label, value, cls) {
+  const box = document.createElement('div');
+  box.className = 'stat-box';
+  box.innerHTML = `<div class="label">${label}</div><div class="value ${cls}">${value}</div>`;
+  container.appendChild(box);
+}
+function levelColor(lv) {
+  if(!lv) return 'var(--text2)';
+  if(lv.includes('최상')||lv.includes('매우높')||lv.includes('매우좋')) return '#00d4aa';
+  if(lv.includes('상')||lv.includes('높')||lv.includes('좋')) return '#6c63ff';
+  if(lv.includes('중상')) return '#3b82f6';
+  if(lv.includes('중하')) return '#f59e0b';
+  if(lv.includes('하')||lv.includes('낮')||lv.includes('나쁨')) return '#ff6b6b';
+  if(lv.includes('최하')||lv.includes('매우낮')) return '#e53e3e';
+  return 'var(--accent)';
+}
+function levelBadge(lv) {
+  if(!lv) return '<span style="color:var(--text2);">-</span>';
+  const c = levelColor(lv);
+  return `<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:${c}22;color:${c};border:1px solid ${c}55;">${lv}</span>`;
+}
+// 가로 막대 (레이블 + 바 + 수치 + 수준뱃지)
+function scorBar(name, score, max, lv, color) {
+  const pct = Math.min(100, Math.round((score/max)*100));
+  return `<div style="margin-bottom:10px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;">
+      <span style="font-size:12px;font-weight:600;color:var(--text);">${name}</span>
+      <span style="display:flex;align-items:center;gap:6px;">${levelBadge(lv)}<span style="font-size:13px;font-weight:700;color:${color||levelColor(lv)};">${score}</span></span>
+    </div>
+    <div style="background:var(--surface2);border-radius:4px;height:8px;overflow:hidden;">
+      <div style="height:100%;width:${pct}%;background:${color||levelColor(lv)};border-radius:4px;transition:width .4s;"></div>
+    </div>
+  </div>`;
+}
+
+// ============ CHART HELPERS ============
+function destroyChart(key) { if(charts[key]) { charts[key].destroy(); delete charts[key]; } }
+function gc() { return isDark ? '#2e3347' : '#e2e5ef'; }
+function tc() { return isDark ? '#8b90a5' : '#5a6075'; }
+function lc() { return isDark ? '#e4e7f1' : '#1a1d27'; }
+
+// ============ ② 적성검사 ============
+function renderAptitude(apt) {
+  destroyChart('barAptitude');
+  const scores = apt.scores || [];
+  if(!scores.length) { document.getElementById('aptitudeSection').innerHTML = '<p style="font-size:13px;color:var(--text2);">적성 데이터 없음</p>'; return; }
+
+  // 우측 수치표
+  const tableEl = document.getElementById('aptitudeTable');
+  const max = 160;
+  tableEl.innerHTML = scores.map(s => scorBar(s.name, +s.score, max, s.level, levelColor(s.level))).join('');
+
+  // 차트 (수평 바)
+  const colors = scores.map(s => levelColor(s.level));
+  charts.barAptitude = new Chart(document.getElementById('barAptitude'), {
+    type: 'bar',
+    data: {
+      labels: scores.map(s => s.name),
+      datasets: [{
+        data: scores.map(s => +s.score),
+        backgroundColor: colors.map(c => c+'99'),
+        borderColor: colors,
+        borderWidth: 2,
+        borderRadius: 5,
+        barThickness: 22
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+      scales: {
+        x: { min: 70, max: 140, grid: { color: gc() }, ticks: { color: tc(), stepSize: 10 } },
+        y: { grid: { display: false }, ticks: { color: lc(), font: { size: 11, family: 'Noto Sans KR' } } }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: {
+          label: ctx => ` ${ctx.raw}점`,
+          afterLabel: ctx => `수준: ${scores[ctx.dataIndex].level}`
+        }}
+      }
+    }
+  });
+
+  // 추천직업
+  const jobsEl = document.getElementById('aptitudeJobs');
+  if(apt.jobs?.length) {
+    jobsEl.innerHTML = `<div style="background:var(--surface2);border-radius:8px;padding:12px;">
+      <div style="font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.5px;margin-bottom:8px;">🏆 추천 직업 (적성 기반)</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">${apt.jobs.map(j=>`<span style="padding:4px 12px;border-radius:20px;font-size:12px;background:rgba(108,99,255,.15);color:var(--accent);border:1px solid rgba(108,99,255,.3);">${j}</span>`).join('')}</div>
+    </div>`;
+  } else { jobsEl.innerHTML = ''; }
+}
+
+// ============ ③ 흥미유형 ============
+function renderInterest(interest) {
+  destroyChart('radarHolland');
+  const types = interest.types || [];
+
+  // 우측 상세
+  const detailEl = document.getElementById('interestDetail');
+  if(types.length) {
+    const order = ['R','I','A','S','E','C'];
+    const nameMap = {R:'현실형',I:'탐구형',A:'예술형',S:'사회형',E:'진취형',C:'관습형'};
+    const sorted = order.map(c => types.find(t=>t.code===c)||{code:c,name:nameMap[c],t:0,lv:'-'});
+
+    // 고유형/저유형
+    const sorted2 = [...types].sort((a,b)=>b.t-a.t);
+    const top = sorted2.slice(0,2).map(t=>`${t.name}(${t.code})`).join(', ');
+    const bot = sorted2.slice(-2).map(t=>`${t.name}(${t.code})`).join(', ');
+
+    detailEl.innerHTML = `
+      <div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;">
+        ${interest.code1 ? `<span style="padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;background:rgba(0,212,170,.15);color:var(--accent2);border:1px solid rgba(0,212,170,.4);">1순위 ${interest.code1}</span>` : ''}
+        ${interest.code2 ? `<span style="padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;background:rgba(108,99,255,.15);color:var(--accent);border:1px solid rgba(108,99,255,.4);">2순위 ${interest.code2}</span>` : ''}
+      </div>
+      ${sorted.map(t => {
+        const pct = Math.min(100, Math.round(((+t.t-30)/50)*100));
+        const c = levelColor(t.lv);
+        return `<div style="margin-bottom:9px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;">
+            <span style="font-size:12px;font-weight:600;">${t.name}(${t.code})</span>
+            <span style="display:flex;align-items:center;gap:5px;">${levelBadge(t.lv)}<span style="font-size:13px;font-weight:700;color:${c};">T=${t.t}</span></span>
+          </div>
+          <div style="background:var(--surface2);border-radius:4px;height:7px;overflow:hidden;">
+            <div style="height:100%;width:${Math.max(0,pct)}%;background:${c};border-radius:4px;"></div>
+          </div>
+        </div>`;
+      }).join('')}
+      <div style="margin-top:10px;font-size:11px;color:var(--text2);">
+        <span style="color:var(--accent2);">▲ 고유형:</span> ${interest.hi||top} &nbsp;|&nbsp; <span style="color:var(--accent3);">▼ 저유형:</span> ${interest.lo||bot}
+      </div>`;
+
+    // 레이더 차트
+    const vals = sorted.map(t=>+t.t||0);
+    charts.radarHolland = new Chart(document.getElementById('radarHolland'), {
+      type: 'radar',
+      data: {
+        labels: sorted.map(t=>`${t.name}(${t.code})`),
+        datasets: [{
+          label: 'T점수', data: vals,
+          backgroundColor: 'rgba(0,212,170,.12)', borderColor: '#00d4aa', borderWidth: 2,
+          pointBackgroundColor: vals.map((_,i) => i<2 ? '#00d4aa' : '#6c63ff'),
+          pointRadius: 5
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: { r: { min: 30, max: 70, ticks: { stepSize: 10, color: tc(), backdropColor: 'transparent', font:{size:10} }, grid: { color: gc() }, pointLabels: { color: lc(), font: { size: 11, family: 'Noto Sans KR' } } } },
+        plugins: { legend: { display: false } }
+      }
+    });
+  }
+
+  // 추천직업
+  const jobsEl = document.getElementById('interestJobs');
+  if(interest.jobs) {
+    const jobArr = interest.jobs.split(',').map(j=>j.trim()).filter(Boolean);
+    jobsEl.innerHTML = `<div style="background:var(--surface2);border-radius:8px;padding:12px;">
+      <div style="font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.5px;margin-bottom:8px;">🎨 추천 직업 (흥미 기반)</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">${jobArr.map(j=>`<span style="padding:3px 10px;border-radius:20px;font-size:11px;background:rgba(0,212,170,.1);color:var(--accent2);border:1px solid rgba(0,212,170,.25);">${j}</span>`).join('')}</div>
+    </div>`;
+  } else { jobsEl.innerHTML = ''; }
+}
+
+// ============ ④ 성격특성 ============
+function renderPersonality(p) {
+  const section = document.getElementById('personalitySection');
+  const big5Keys = ['ext','agr','con','ope','neu'];
+  const big5Names = {ext:'외향성',agr:'친화성(우호성)',con:'성실성',ope:'개방성',neu:'신경성(정서불안정)'};
+  const big5Desc  = {ext:'활동성·사교성·적극성',agr:'협동심·배려·공감',con:'계획성·책임감·꼼꼼함',ope:'창의성·호기심·개방적 사고',neu:'감정 민감도 (높을수록 불안정)'};
+  const adaptKeys = ['ssat','sadp','peer','grade'];
+  const adaptNames= {ssat:'학교적응',sadp:'사회적응',peer:'또래관계',grade:'학업수준'};
+
+  const hasBig5 = big5Keys.some(k=>p[k]);
+  const hasAdapt = adaptKeys.some(k=>p[k]);
+  const hasExtra = p.fav||p.bad||p.dept||p.job;
+
+  if(!hasBig5 && !hasAdapt && !hasExtra) { section.style.display='none'; return; }
+  section.style.display = 'block';
+
+  // Big5 가로 막대형
+  const big5El = document.getElementById('big5Bars');
+  if(hasBig5) {
+    big5El.innerHTML = big5Keys.map(k => {
+      const lv = p[k];
+      if(!lv) return '';
+      const lvNum = {매우낮음:1,낮음:2,보통:3,높음:4,매우높음:5}[lv]||3;
+      const pct = (lvNum/5)*100;
+      const c = levelColor(lv);
+      return `<div style="margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+          <span style="font-size:12px;font-weight:600;">${big5Names[k]}</span>
+          <span style="display:flex;align-items:center;gap:5px;">${levelBadge(lv)}</span>
+        </div>
+        <div style="font-size:10px;color:var(--text2);margin-bottom:4px;">${big5Desc[k]}</div>
+        <div style="background:var(--surface2);border-radius:4px;height:7px;overflow:hidden;">
+          <div style="height:100%;width:${pct}%;background:${c};border-radius:4px;"></div>
+        </div>
+      </div>`;
+    }).join('');
+  } else { big5El.innerHTML = '<p style="font-size:12px;color:var(--text2);">데이터 없음</p>'; }
+
+  // 희망·선호 정보
+  const extraEl = document.getElementById('personalityExtra');
+  const extraRows = [
+    p.dept && ['희망계열',p.dept],
+    p.job  && ['희망직업',p.job],
+    p.fav  && ['선호과목',p.fav],
+    p.bad  && ['기피과목',p.bad],
+  ].filter(Boolean);
+  extraEl.innerHTML = extraRows.map(([k,v])=>`
+    <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;">
+      <span style="font-size:11px;font-weight:700;color:var(--text2);white-space:nowrap;min-width:56px;">${k}</span>
+      <span style="font-size:12px;color:var(--text);line-height:1.5;">${v}</span>
+    </div>`).join('') || '<p style="font-size:12px;color:var(--text2);">입력 없음</p>';
+
+  // 학교적응
+  const adaptEl = document.getElementById('schoolAdapt');
+  if(hasAdapt) {
+    adaptEl.innerHTML = adaptKeys.map(k=>{
+      const lv = p[k]; if(!lv) return '';
+      const lvNum = {매우낮음:1,나쁨:1,낮음:2,보통:3,높음:4,좋음:4,매우높음:5,매우좋음:5}[lv]||3;
+      const pct=(lvNum/5)*100; const c=levelColor(lv);
+      return `<div style="margin-bottom:9px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+          <span style="font-size:12px;font-weight:600;">${adaptNames[k]}</span>${levelBadge(lv)}
+        </div>
+        <div style="background:var(--surface2);border-radius:4px;height:7px;overflow:hidden;">
+          <div style="height:100%;width:${pct}%;background:${c};border-radius:4px;"></div>
+        </div>
+      </div>`;
+    }).join('');
+  } else { adaptEl.innerHTML = '<p style="font-size:12px;color:var(--text2);">데이터 없음</p>'; }
+}
+
+// ============ ⑤ 진로성숙도 & 진로장벽 ============
+function renderCareer(career) {
+  const cm = career.cm || {};
+  const cd = career.cd || {};
+
+  // 진로성숙도
+  const cmEl = document.getElementById('careerMaturityBars');
+  let cmHtml = '';
+  if(cm.t) {
+    const c = levelColor(cm.lv);
+    cmHtml += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding:8px 12px;background:var(--surface2);border-radius:8px;">
+      <span style="font-size:22px;font-weight:900;color:${c};">${cm.t}</span>
+      <div><div style="font-size:10px;color:var(--text2);">종합점수</div>${levelBadge(cm.lv)}</div>
+    </div>`;
+  }
+  if(cm.subs?.length) {
+    cmHtml += cm.subs.map(s => scorBar(s.name, +s.sc, 80, s.lv, levelColor(s.lv))).join('');
+  }
+  cmEl.innerHTML = cmHtml || '<p style="font-size:12px;color:var(--text2);">데이터 없음</p>';
+
+  // 진로장벽
+  const cdEl = document.getElementById('careerBarrierBars');
+  let cdHtml = '';
+  if(cd.sc) {
+    const c = levelColor(cd.lv);
+    cdHtml += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding:8px 12px;background:var(--surface2);border-radius:8px;">
+      <span style="font-size:22px;font-weight:900;color:${c};">${cd.sc}</span>
+      <div><div style="font-size:10px;color:var(--text2);">종합점수</div>${levelBadge(cd.lv)}</div>
+    </div>`;
+  }
+  if(cd.subs?.length) {
+    cdHtml += cd.subs.map(s => scorBar(s.name, +s.sc, 80, s.lv, levelColor(s.lv))).join('');
+  }
+  cdEl.innerHTML = cdHtml || '<p style="font-size:12px;color:var(--text2);">데이터 없음</p>';
+
+  // 진로 생각/계획
+  const thoughtEl = document.getElementById('careerThought');
+  if(career.thought || career.plan) {
+    thoughtEl.innerHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      ${career.thought ? `<div style="background:rgba(0,212,170,.08);border:1px solid rgba(0,212,170,.2);border-radius:8px;padding:12px;">
+        <div style="font-size:10px;font-weight:700;color:var(--accent2);letter-spacing:.5px;margin-bottom:6px;">💭 진로에 대한 생각</div>
+        <div style="font-size:13px;color:var(--text);line-height:1.7;">${career.thought}</div>
+      </div>` : ''}
+      ${career.plan ? `<div style="background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.2);border-radius:8px;padding:12px;">
+        <div style="font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.5px;margin-bottom:6px;">📌 노력할 점 / 계획</div>
+        <div style="font-size:13px;color:var(--text);line-height:1.7;">${career.plan}</div>
+      </div>` : ''}
+    </div>`;
+  } else { thoughtEl.innerHTML = ''; }
+
+  // 구버전 호환: barCareer canvas가 있으면 숨김
+  const old = document.getElementById('barCareer');
+  if(old) old.closest('.card') && (old.style.display='none');
+}
+
+// ============ ⑥ 자기주도학습 ============
+function renderSDL(sd, sbuText, sdlNarrative) {
+  destroyChart('radarSelf');
+  destroyChart('lineGrowth');
+  const narr = sdlNarrative || {};
+
+  const labels = ['학습계획','학습실행','학습평가','학습효능감','학습메타인지'];
+  const values = labels.map(l => sd[l]||0);
+  const hasData = values.some(v=>v>0);
+
+  // 레이더 차트
+  const canvas = document.getElementById('radarSelf');
+  const wrap = canvas.parentElement;
+  wrap.querySelectorAll('.sdl-empty').forEach(e=>e.remove());
+  if(!hasData) {
+    canvas.style.display = 'none';
+    const msg = document.createElement('div');
+    msg.className = 'sdl-empty';
+    msg.style.cssText = 'display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;gap:8px;';
+    msg.innerHTML = '<div style="font-size:32px;opacity:.3;">📐</div><div style="font-size:12px;color:var(--text2);">자기주도학습 데이터가 없습니다.</div><button onclick="switchMode()" style="margin-top:8px;padding:4px 12px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--accent);font-size:11px;cursor:pointer;font-family:inherit;">점수 직접입력</button>';
+    wrap.appendChild(msg);
+    document.getElementById('sdlScoreTable').innerHTML = '';
+    document.getElementById('sdlInterpretations').innerHTML = '';
+    document.getElementById('sdlStrengthWeak').innerHTML = '';
+    document.getElementById('sdlSbuText').innerHTML = '';
+    return;
+  }
+  canvas.style.display = '';
+  charts.radarSelf = new Chart(canvas, {
+    type: 'radar',
+    data: { labels, datasets: [{ label: '점수', data: values,
+      backgroundColor: 'rgba(108,99,255,.15)', borderColor: '#6c63ff', borderWidth: 2,
+      pointBackgroundColor: '#6c63ff', pointRadius: 5
+    }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      scales: { r: { min: 20, max: 80, ticks: { stepSize: 20, color: tc(), backdropColor: 'transparent' }, grid: { color: gc() }, pointLabels: { color: lc(), font: { size: 11, family: 'Noto Sans KR' } } } },
+      plugins: { legend: { display: false } }
+    }
+  });
+
+  // 점수 표 (우측) — 유형 라벨 제거, 점수만 표시
+  const total = values.reduce((a,b)=>a+b,0);
+  const totalMax = labels.length * 80;
+  document.getElementById('sdlScoreTable').innerHTML = `
+    <div style="background:var(--surface2);border-radius:10px;padding:14px;margin-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <span style="font-size:24px;font-weight:900;color:var(--accent);">${total}<span style="font-size:12px;font-weight:400;color:var(--text2);">/${totalMax}</span></span>
+        <div style="font-size:11px;color:var(--text2);">종합점수</div>
+      </div>
+      ${labels.map((l,i) => {
+        const v = values[i];
+        const bpct = Math.round((v/80)*100);
+        return `<div style="margin-bottom:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">
+            <span style="font-size:12px;font-weight:600;">${l}</span>
+            <span style="font-size:13px;font-weight:700;">${v}점</span>
+          </div>
+          <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden;">
+            <div style="height:100%;width:${bpct}%;background:var(--accent);border-radius:4px;"></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+
+  // 영역별 서술 해석 — 구글시트(RAW_자기주도_서술)의 실제 데이터 표시
+  const hasNarr = labels.some(l => narr[l]);
+  document.getElementById('sdlInterpretations').innerHTML = hasNarr ? `
+    <div style="font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.5px;margin-bottom:10px;">● 영역별 해석</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      ${labels.map(l => {
+        const txt = narr[l] || '';
+        if(!txt) return '';
+        return `<div style="background:var(--surface2);border-radius:8px;padding:12px;">
+          <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:6px;">${l} 해석 <span style="font-size:11px;font-weight:400;color:var(--text2);">${sd[l]||''}점</span></div>
+          <div style="font-size:12px;color:var(--text);line-height:1.7;">${txt}</div>
+        </div>`;
+      }).filter(Boolean).join('')}
+    </div>` : '';
+
+  // 학습 강점/약점 — 구글시트 실제 데이터
+  const hasStrWeak = narr.학습강점 || narr.학습약점;
+  document.getElementById('sdlStrengthWeak').innerHTML = hasStrWeak ? `
+    <div style="background:rgba(0,212,170,.08);border:1px solid rgba(0,212,170,.2);border-radius:8px;padding:12px;">
+      <div style="font-size:11px;font-weight:700;color:var(--accent2);margin-bottom:6px;">💪 나의 학습 강점</div>
+      <div style="font-size:12px;color:var(--text);line-height:1.8;">${narr.학습강점 || '데이터 없음'}</div>
+    </div>
+    <div style="background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2);border-radius:8px;padding:12px;">
+      <div style="font-size:11px;font-weight:700;color:var(--accent3);margin-bottom:6px;">⚠ 나의 학습 약점</div>
+      <div style="font-size:12px;color:var(--text);line-height:1.8;">${narr.학습약점 || '데이터 없음'}</div>
+    </div>` : '';
+
+  // 종합의견 — 구글시트 실제 데이터
+  const sbuSection = document.getElementById('sdlSbuText');
+  let sbuHTML = '';
+  if(narr.종합의견) {
+    sbuHTML += `<div style="background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.2);border-radius:8px;padding:12px;margin-bottom:8px;">
+      <div style="font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.5px;margin-bottom:6px;">📊 종합 해석</div>
+      <div style="font-size:12px;color:var(--text);line-height:1.8;">${narr.종합의견}</div>
+    </div>`;
+  }
+  if(sbuText) {
+    sbuHTML += `<div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:12px;">
+      <div style="font-size:11px;font-weight:700;color:var(--warn);letter-spacing:.5px;margin-bottom:6px;">📋 생기부 참고문장</div>
+      <div style="font-size:12px;color:var(--text);line-height:1.8;">${sbuText}</div>
+    </div>`;
+  }
+  sbuSection.innerHTML = sbuHTML;
+}
+
+// ============ 구버전 함수들 (호환성 유지) ============
+function renderRadarSelf(sd) { renderSDL(sd, currentStudent?.sbuText || '', currentStudent?.sdlNarrative || {}); }
+function renderRadarHolland(types) { /* handled by renderInterest */ }
+function renderBarAptitude(scores) { /* handled by renderAptitude */ }
+function renderBarCareer(career) { /* handled by renderCareer */ }
+function renderGrowthLine(sd) { /* merged into renderSDL */ }
+
+// ============ TIMELINE ============
+// ============ EXPORT FOR AI ============
+function exportForAI() {
+  if(!currentStudent) return alert('먼저 학생 데이터를 로드하세요.');
+  const d = currentStudent;
+  const s = d.student || {};
+
+  const prompt = `다음은 고등학교 학생의 5종 검사 결과와 상담 기록입니다.
+성장 리포트를 작성해주세요:
+1. 학생 프로필 요약 (강점 중심)
+2. 5종 검사 종합 분석 (적성-흥미 연계, 인성-자기주도 연계)
+3. 주요 발견점 (교차 분석 인사이트)
+4. 진로 방향 제안 (2~3개)
+5. 상담 후속 조치 제안
+
+───────────────────────────────────`;
+
+  let text = prompt + '\n\n';
+  text += `=== 학생 진로상담 데이터 ===\n`;
+  text += `이름: ${s.name} | ${s.grade}학년 ${s.cls}반 ${s.num}번 | 학번: ${s.id}\n\n`;
+
+  // 자기주도학습
+  const sd = d.selfDirected || {};
+  const sdKeys = ['학습계획','학습실행','학습평가','학습효능감','학습메타인지'];
+  const hasSD = sdKeys.some(k => sd[k]);
+  if(hasSD) {
+    text += `[자기주도학습검사]\n`;
+    sdKeys.forEach(k => { if(sd[k]) text += `  ${k}: ${sd[k]}점\n`; });
+    const avg = Math.round(sdKeys.filter(k=>sd[k]).reduce((a,k)=>a+sd[k],0) / sdKeys.filter(k=>sd[k]).length);
+    text += `  평균: ${avg}점\n`;
+    const narr = d.sdlNarrative || {};
+    if(narr.학습강점) text += `  학습강점: ${narr.학습강점}\n`;
+    if(narr.학습약점) text += `  학습약점: ${narr.학습약점}\n`;
+    if(narr.종합의견) text += `  종합의견: ${narr.종합의견}\n`;
+    text += '\n';
+  } else {
+    text += `[자기주도학습검사] 데이터 없음\n\n`;
+  }
+
+  // 적성검사
+  if(d.aptitude?.scores?.length) {
+    text += `[적성검사]\n`;
+    d.aptitude.scores.forEach(s => text += `  ${s.name}: ${s.score}점 (${s.level})\n`);
+    if(d.aptitude.jobs?.length) text += `  추천직업: ${d.aptitude.jobs.join(', ')}\n`;
+    text += '\n';
+  }
+
+  // 인성검사
+  const p = d.personality || {};
+  const pMap = {ext:'외향성',agr:'우호성',con:'성실성',ope:'개방성',neu:'정서적안정',ssat:'학교적응',sadp:'사회적응',peer:'또래관계',grade:'학업수준'};
+  const hasPer = Object.keys(pMap).some(k => p[k]) || p.fav || p.bad || p.dept || p.job;
+  if(hasPer) {
+    text += `[인성검사]\n`;
+    Object.entries(pMap).forEach(([k,v]) => { if(p[k]) text += `  ${v}: ${p[k]}\n`; });
+    if(p.fav)  text += `  선호과목: ${p.fav}\n`;
+    if(p.bad)  text += `  비선호과목: ${p.bad}\n`;
+    if(p.dept) text += `  희망계열: ${p.dept}\n`;
+    if(p.job)  text += `  희망직업: ${p.job}\n`;
+    text += '\n';
+  } else {
+    text += `[인성검사] 데이터 없음\n\n`;
+  }
+
+  // 흥미검사
+  if(d.interest?.types?.length) {
+    text += `[흥미검사] 1순위: ${d.interest.code1 || '-'}, 2순위: ${d.interest.code2 || '-'}\n`;
+    d.interest.types.forEach(t => text += `  ${t.name}(${t.code}): T=${t.t} (${t.lv})\n`);
+    if(d.interest.hi) text += `  가장높은흥미분야: ${d.interest.hi}\n`;
+    if(d.interest.lo) text += `  가장낮은흥미분야: ${d.interest.lo}\n`;
+    if(d.interest.jobs) text += `  흥미추천직업: ${d.interest.jobs}\n`;
+    text += '\n';
+  }
+
+  // 진로성숙도
+  if(d.career?.cm?.subs?.length) {
+    text += `[진로성숙도] 전체: ${d.career.cm.t}점 (${d.career.cm.lv})\n`;
+    d.career.cm.subs.forEach(s => text += `  ${s.name}: ${s.sc}점 (${s.lv})\n`);
+    text += '\n';
+  }
+
+  // 진로결정
+  if(d.career?.cd?.subs?.length) {
+    text += `[진로결정갈등] 전체: ${d.career.cd.sc}점 (${d.career.cd.lv})\n`;
+    d.career.cd.subs.forEach(s => text += `  ${s.name}: ${s.sc}점 (${s.lv})\n`);
+    text += '\n';
+  }
+
+  if(d.career?.thought) text += `[진로에 대한 생각] ${d.career.thought}\n`;
+  if(d.career?.plan)    text += `[노력할 점] ${d.career.plan}\n\n`;
+
+  // 상담기록
+  if(d.counseling?.length) {
+    text += `[상담기록]\n`;
+    d.counseling.forEach(c => text += `  ${c.date} | ${c.title}: ${c.desc}\n`);
+    text += '\n';
+  }
+
+  navigator.clipboard.writeText(text).then(() => {
+    alert('✅ AI 리포트용 데이터가 클립보드에 복사되었습니다.\n\nClaude 또는 ChatGPT에 붙여넣기하세요.\n(프롬프트가 데이터 위에 포함되어 있습니다.)');
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('✅ AI 리포트용 데이터가 클립보드에 복사되었습니다.');
+  });
+}
+</script>
+</body>
+</html>

@@ -156,7 +156,7 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--
 /* HEADER */
 .header { background:linear-gradient(135deg,#1a1d27 0%,#242836 100%); border-bottom:1px solid var(--border); padding:16px 24px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
 .header h1 { font-size:18px; font-weight:700; background:linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; white-space:nowrap; }
-.header-controls { display:flex; gap:8px; align-items:center; flex:1; min-width:300px; }
+.header-controls { display:flex; gap:8px; align-items:center; flex:1; min-width:300px; flex-wrap:wrap; }
 .header-controls input { background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:8px 14px; border-radius:8px; font-size:13px; font-family:inherit; outline:none; transition:border .2s; }
 .header-controls input:focus { border-color:var(--accent); }
 #gasUrl { flex:1; min-width:200px; }
@@ -177,14 +177,14 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--
 
 /* ── 모바일 세로 모드 대응 ── */
 @media(max-width:600px) {
-  /* 헤더 */
-  .header { padding:10px 12px; gap:8px; }
-  .header h1 { font-size:13px; white-space:normal; line-height:1.4; }
-  .header-controls { flex-wrap:wrap; min-width:0; gap:6px; }
-  .header-controls input { font-size:12px; padding:6px 10px; }
-  #gasUrl { min-width:0; flex:1 1 100%; }
-  #studentId { width:100%; flex:1 1 100%; }
-  .btn { font-size:12px; padding:6px 12px; }
+  /* 헤더 - 세로 전체폭 레이아웃 */
+  .header { padding:10px 12px; gap:6px; flex-direction:column; align-items:stretch; }
+  .header h1 { font-size:13px; white-space:normal; line-height:1.4; text-align:center; }
+  .header-controls { flex-wrap:wrap; min-width:0; gap:6px; flex:none; width:100%; }
+  .header-controls input { font-size:12px; padding:7px 10px; }
+  #accessPw { flex:1 1 45%; min-width:0; }
+  #studentId { flex:1 1 30%; min-width:0; width:auto; }
+  .btn { font-size:12px; padding:7px 12px; }
 
   /* 메인 패딩 */
   .main { padding:10px; }

@@ -175,6 +175,51 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--
 .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:16px; }
 @media(max-width:900px) { .grid-2,.grid-3 { grid-template-columns:1fr; } }
 
+/* ── 모바일 세로 모드 대응 ── */
+@media(max-width:600px) {
+  /* 헤더 */
+  .header { padding:10px 12px; gap:8px; }
+  .header h1 { font-size:13px; white-space:normal; line-height:1.4; }
+  .header-controls { flex-wrap:wrap; min-width:0; gap:6px; }
+  .header-controls input { font-size:12px; padding:6px 10px; }
+  #gasUrl { min-width:0; flex:1 1 100%; }
+  #studentId { width:100%; flex:1 1 100%; }
+  .btn { font-size:12px; padding:6px 12px; }
+
+  /* 메인 패딩 */
+  .main { padding:10px; }
+
+  /* 카드 내부 2열 인라인 그리드 → 1열 */
+  .card [style*="grid-template-columns:1fr 1fr"],
+  .card [style*="grid-template-columns: 1fr 1fr"],
+  .inner-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 차트 높이 축소 */
+  .chart-wrap { height:220px !important; }
+  .chart-wrap canvas { max-height:220px !important; }
+
+  /* stat-row 박스 최소폭 제거 */
+  .stat-box { min-width:80px; }
+
+  /* 탭 버튼 작게 */
+  .tab { padding:6px 10px; font-size:11px; }
+
+  /* 프로필 버튼 영역 */
+  .profile { gap:12px; }
+  .profile > div[style*="margin-left:auto"] { margin-left:0 !important; width:100%; }
+
+  /* 자기주도 강점/약점 2열 → 1열 */
+  #sdlStrengthWeak { grid-template-columns:1fr !important; }
+
+  /* 흥미유형 해석 2열 → 1열 */
+  #sdlInterpretations [style*="grid-template-columns:1fr 1fr"] { grid-template-columns:1fr !important; }
+
+  /* 모달 */
+  .modal { padding:18px; }
+}
+
 /* CARDS */
 .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px; }
 .card-title { font-size:13px; font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:1px; margin-bottom:14px; display:flex; align-items:center; gap:6px; }
@@ -199,6 +244,9 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--
 .stat-box .value.high { color:var(--accent2); }
 .stat-box .value.mid { color:var(--warn); }
 .stat-box .value.low { color:var(--accent3); }
+
+/* INNER GRID */
+.inner-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start; }
 
 /* CHART CONTAINERS */
 .chart-wrap { position:relative; height:280px; }
@@ -319,7 +367,7 @@ body.light-mode .tab.active { background:var(--accent) !important; color:#fff !i
       <div class="card-title"><span>🎯</span> 적성능력 검사</div>
       <div id="aptitudeSection">
         <!-- 차트(좌) + 수치표(우) -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+        <div class="inner-grid-2">
           <div class="chart-wrap" style="height:300px;"><canvas id="barAptitude"></canvas></div>
           <div id="aptitudeTable"></div>
         </div>
@@ -331,7 +379,7 @@ body.light-mode .tab.active { background:var(--accent) !important; color:#fff !i
     <!-- ③ 흥미유형 -->
     <div class="card" style="margin-bottom:16px;">
       <div class="card-title"><span>🎨</span> 흥미유형 (Holland)</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+      <div class="inner-grid-2">
         <div class="chart-wrap" style="height:300px;"><canvas id="radarHolland"></canvas></div>
         <div id="interestDetail"></div>
       </div>
@@ -341,7 +389,7 @@ body.light-mode .tab.active { background:var(--accent) !important; color:#fff !i
     <!-- ④ 성격특성 (인성검사) -->
     <div class="card" style="margin-bottom:16px;" id="personalitySection">
       <div class="card-title"><span>🧠</span> 성격특성 (Big5 인성검사)</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div class="inner-grid-2">
         <div>
           <div style="font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.5px;margin-bottom:10px;">● 성격 5요인</div>
           <div id="big5Bars"></div>
@@ -358,7 +406,7 @@ body.light-mode .tab.active { background:var(--accent) !important; color:#fff !i
     <!-- ⑤ 진로성숙도 & 진로장벽 -->
     <div class="card" style="margin-bottom:16px;">
       <div class="card-title"><span>🗺️</span> 진로성숙도 &amp; 진로장벽</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+      <div class="inner-grid-2">
         <div>
           <div style="font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.5px;margin-bottom:10px;">● 진로성숙도</div>
           <div id="careerMaturityBars"></div>
@@ -377,14 +425,14 @@ body.light-mode .tab.active { background:var(--accent) !important; color:#fff !i
       </div>
  
       <!-- SDL 차트 + 영역별 점수표 -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+      <div class="inner-grid-2">
         <div class="chart-wrap" style="height:280px;"><canvas id="radarSelf"></canvas></div>
         <div id="sdlScoreTable"></div>
       </div>
       <!-- 영역별 서술 해석문 -->
       <div id="sdlInterpretations" style="margin-top:16px;"></div>
       <!-- 학습 강점/약점 -->
-      <div id="sdlStrengthWeak" style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px;"></div>
+      <div id="sdlStrengthWeak" class="inner-grid-2" style="margin-top:12px;"></div>
       <!-- 생기부 참고문장 -->
       <div id="sdlSbuText" style="margin-top:12px;"></div>
     </div>
@@ -1067,7 +1115,7 @@ function renderSDL(sd, sbuText, sdlNarrative) {
   const hasNarr = labels.some(l => narr[l]);
   document.getElementById('sdlInterpretations').innerHTML = hasNarr ? `
     <div style="font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.5px;margin-bottom:10px;">● 영역별 해석</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+    <div class="inner-grid-2" style="gap:10px;">
       ${labels.map(l => {
         const txt = narr[l] || '';
         if(!txt) return '';

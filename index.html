@@ -32,41 +32,123 @@ body.light-mode .profile-avatar {
 }
 /* PDF / Print */
 @media print {
-  body { background:#fff !important; color:#000 !important; }
-  .header-controls, .no-print { display:none !important; }
-  .header { background:#fff !important; border-bottom:2px solid #333 !important; padding:10px 24px !important; }
-  .header h1 { -webkit-text-fill-color:#333 !important; background:none !important; color:#333 !important; font-size:16px !important; }
-  .card { background:#fff !important; border:1px solid #ccc !important; break-inside:avoid; margin-bottom:12px !important; }
-  .card-title { color:#333 !important; }
-  .stat-box { background:#f0f2f7 !important; }
-  .stat-box .label { color:#666 !important; }
-  .stat-box .value { color:#1a1d27 !important; }
-  .sbu-box { background:#f5f5f5 !important; color:#000 !important; max-height:none !important; }
-  .per-table td, .per-table th { color:#000 !important; border-color:#ddd !important; background:#fff !important; }
-  .per-table th { background:#f0f2f7 !important; }
-  .per-badge { border:1px solid #ccc !important; color:#333 !important; background:#f0f2f7 !important; }
-  .per-vhigh, .per-high { color:#006b5c !important; background:#e6f4f1 !important; }
-  .per-mid { color:#3b2eb0 !important; background:#ede8ff !important; }
-  .per-low { color:#7a5900 !important; background:#fff3cd !important; }
-  .per-vlow { color:#8b0000 !important; background:#fde8e8 !important; }
-  canvas { max-height:200px !important; }
-  .chart-wrap { height:200px !important; }
-  .grid-2 { grid-template-columns:1fr 1fr !important; gap:10px !important; }
-  .timeline { max-height:none !important; overflow:visible !important; }
-  .tl-date,.tl-desc { color:#555 !important; }
-  .tl-title { color:#000 !important; }
-  .tl-dot.test { background:#5a52e0 !important; }
-  .tl-dot.counsel { background:#00a884 !important; }
-  .tag { border:1px solid #ccc !important; }
-  .tag-type { color:#5a52e0 !important; background:#ede8ff !important; }
-  .tag-interest { color:#006b5c !important; background:#e6f4f1 !important; }
-  .tag-warn { color:#7a5900 !important; background:#fff3cd !important; }
-  .profile-avatar { background:#5a52e0 !important; -webkit-print-color-adjust:exact; }
-  .value.high { color:#006b5c !important; }
-  .value.mid  { color:#d97706 !important; }
-  .value.low  { color:#c0392b !important; }
-  .sdl-empty, .growth-empty { color:#666 !important; }
-  @page { margin: 15mm; size: A4; }
+  /* 기본 초기화 */
+  *, *::before, *::after { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  @page { margin: 12mm 10mm; size: A4 portrait; }
+
+  body {
+    background: #ffffff !important;
+    color: #1a1d27 !important;
+    font-size: 11px !important;
+    /* CSS 변수 전체 재정의 */
+    --bg: #f8f9fc !important;
+    --surface: #ffffff !important;
+    --surface2: #f0f2f7 !important;
+    --border: #d1d5e0 !important;
+    --text: #1a1d27 !important;
+    --text2: #5a6075 !important;
+    --accent: #5a52e0 !important;
+    --accent2: #00a884 !important;
+    --accent3: #e05555 !important;
+    --warn: #d97706 !important;
+  }
+
+  /* 헤더 */
+  .header {
+    background: #f8f9fc !important;
+    border-bottom: 2px solid #5a52e0 !important;
+    padding: 8px 16px !important;
+    margin-bottom: 8px !important;
+  }
+  .header h1 {
+    -webkit-text-fill-color: #5a52e0 !important;
+    background: none !important;
+    color: #5a52e0 !important;
+    font-size: 15px !important;
+  }
+  .header-controls, .no-print { display: none !important; }
+
+  /* 레이아웃 */
+  .main { padding: 0 !important; max-width: 100% !important; }
+  .grid-2 { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+  .grid-3 { grid-template-columns: 1fr 1fr 1fr !important; gap: 8px !important; }
+
+  /* 카드 */
+  .card {
+    background: #ffffff !important;
+    border: 1px solid #d1d5e0 !important;
+    border-radius: 8px !important;
+    padding: 14px !important;
+    margin-bottom: 10px !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+  .card-title { color: #5a52e0 !important; font-size: 12px !important; }
+
+  /* 프로필 */
+  .profile-avatar { background: #5a52e0 !important; }
+  .profile-info h2 { color: #1a1d27 !important; font-size: 18px !important; }
+  .profile-info p { color: #5a6075 !important; }
+
+  /* 태그 */
+  .tag { border: 1px solid #ccc !important; }
+  .tag-type { color: #5a52e0 !important; background: #ede8ff !important; }
+  .tag-interest { color: #006b5c !important; background: #e6f4f1 !important; }
+  .tag-warn { color: #7a5900 !important; background: #fff3cd !important; }
+
+  /* stat-box */
+  .stat-box { background: #f0f2f7 !important; }
+  .stat-box .label { color: #5a6075 !important; }
+  .stat-box .value { color: #1a1d27 !important; }
+  .value.high { color: #006b5c !important; }
+  .value.mid  { color: #d97706 !important; }
+  .value.low  { color: #c0392b !important; }
+
+  /* 차트 영역 - canvas는 이미지로 대체 */
+  .chart-wrap { height: 220px !important; }
+  .chart-wrap canvas { display: none !important; }
+  .chart-wrap .print-chart-img { display: block !important; width: 100% !important; height: 100% !important; object-fit: contain !important; }
+
+  /* 막대그래프 (가로 진행률) - 배경색 강제 적용 */
+  [style*="background:var(--surface2)"] { background: #f0f2f7 !important; }
+  [style*="background:var(--bg)"] { background: #f8f9fc !important; }
+  [style*="color:var(--text2)"] { color: #5a6075 !important; }
+  [style*="color:var(--text)"] { color: #1a1d27 !important; }
+  [style*="color:var(--accent)"] { color: #5a52e0 !important; }
+  [style*="color:var(--accent2)"] { color: #00a884 !important; }
+  [style*="color:var(--accent3)"] { color: #e05555 !important; }
+  [style*="color:var(--warn)"] { color: #d97706 !important; }
+
+  /* 학생부 박스 */
+  .sbu-box {
+    background: #f5f5f5 !important;
+    color: #1a1d27 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    border: 1px solid #ddd !important;
+  }
+
+  /* 테이블 */
+  .per-table td, .per-table th { color: #1a1d27 !important; border-color: #ddd !important; background: #fff !important; }
+  .per-table th { background: #f0f2f7 !important; }
+  .per-badge { border: 1px solid #ccc !important; color: #333 !important; background: #f0f2f7 !important; }
+  .per-vhigh, .per-high { color: #006b5c !important; background: #e6f4f1 !important; }
+  .per-mid { color: #3b2eb0 !important; background: #ede8ff !important; }
+  .per-low { color: #7a5900 !important; background: #fff3cd !important; }
+  .per-vlow { color: #8b0000 !important; background: #fde8e8 !important; }
+
+  /* 타임라인 */
+  .timeline { max-height: none !important; overflow: visible !important; }
+  .tl-date,.tl-desc { color: #555 !important; }
+  .tl-title { color: #1a1d27 !important; }
+  .tl-dot.test { background: #5a52e0 !important; }
+  .tl-dot.counsel { background: #00a884 !important; }
+
+  /* 빈 상태 숨김 */
+  .sdl-empty, .growth-empty { color: #666 !important; }
+
+  /* 오버플로우 제거 */
+  .timeline, .sbu-box { overflow: visible !important; max-height: none !important; }
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
@@ -371,23 +453,64 @@ function toggleTheme() {
 // ============ PDF SAVE ============
 function savePDF() {
   const wasLight = document.body.classList.contains('light-mode');
-  // PDF는 항상 라이트모드로 출력
   if(!wasLight) {
     document.body.classList.add('light-mode');
+    const gridCol='#e2e5ef', tickCol='#5a6075', labelCol='#1a1d27';
+    Object.values(charts).forEach(ch => {
+      if(!ch?.options) return;
+      const sc = ch.options.scales || {};
+      ['x','y','r'].forEach(k => {
+        if(!sc[k]) return;
+        if(sc[k].grid) sc[k].grid.color = gridCol;
+        if(sc[k].ticks) sc[k].ticks.color = tickCol;
+        if(sc[k].pointLabels) sc[k].pointLabels.color = labelCol;
+      });
+      if(ch.options.plugins?.legend?.labels) ch.options.plugins.legend.labels.color = labelCol;
+      ch.update();
+    });
   }
-  // 파일명을 학번_이름으로 설정 (브라우저 PDF 저장 시 기본 파일명)
   const origTitle = document.title;
   if(currentStudent?.student) {
     const s = currentStudent.student;
     document.title = `${s.id}_${s.name}_진로상담`;
   }
+  // 차트 캔버스 → PNG 이미지로 변환 (인쇄용)
+  const chartImgs = [];
+  document.querySelectorAll('.chart-wrap').forEach(wrap => {
+    const canvas = wrap.querySelector('canvas');
+    if(canvas && canvas.style.display !== 'none') {
+      wrap.querySelectorAll('.print-chart-img').forEach(e => e.remove());
+      try {
+        const img = document.createElement('img');
+        img.className = 'print-chart-img';
+        img.src = canvas.toDataURL('image/png');
+        img.style.cssText = 'display:none;width:100%;height:220px;object-fit:contain;';
+        wrap.appendChild(img);
+        chartImgs.push(img);
+      } catch(e) {}
+    }
+  });
   setTimeout(() => {
     window.print();
+    chartImgs.forEach(img => img.remove());
     document.title = origTitle;
     if(!wasLight) {
       document.body.classList.remove('light-mode');
+      const gridCol='#2e3347', tickCol='#8b90a5', labelCol='#e4e7f1';
+      Object.values(charts).forEach(ch => {
+        if(!ch?.options) return;
+        const sc = ch.options.scales || {};
+        ['x','y','r'].forEach(k => {
+          if(!sc[k]) return;
+          if(sc[k].grid) sc[k].grid.color = gridCol;
+          if(sc[k].ticks) sc[k].ticks.color = tickCol;
+          if(sc[k].pointLabels) sc[k].pointLabels.color = labelCol;
+        });
+        if(ch.options.plugins?.legend?.labels) ch.options.plugins.legend.labels.color = labelCol;
+        ch.update();
+      });
     }
-  }, 300);
+  }, 500);
 }
 
 // ============ SETTINGS ============
@@ -608,13 +731,14 @@ function levelBadge(lv) {
 // 가로 막대 (레이블 + 바 + 수치 + 수준뱃지)
 function scorBar(name, score, max, lv, color) {
   const pct = Math.min(100, Math.round((score/max)*100));
+  const barColor = color || levelColor(lv);
   return `<div style="margin-bottom:10px;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;">
       <span style="font-size:12px;font-weight:600;color:var(--text);">${name}</span>
-      <span style="display:flex;align-items:center;gap:6px;">${levelBadge(lv)}<span style="font-size:13px;font-weight:700;color:${color||levelColor(lv)};">${score}</span></span>
+      <span style="display:flex;align-items:center;gap:6px;">${levelBadge(lv)}<span style="font-size:13px;font-weight:700;color:${barColor};">${score}</span></span>
     </div>
-    <div style="background:var(--surface2);border-radius:4px;height:8px;overflow:hidden;">
-      <div style="height:100%;width:${pct}%;background:${color||levelColor(lv)};border-radius:4px;transition:width .4s;"></div>
+    <div style="background:#e8eaf0;border-radius:4px;height:8px;overflow:hidden;">
+      <div style="height:100%;width:${pct}%;background:${barColor};border-radius:4px;transition:width .4s;print-color-adjust:exact;-webkit-print-color-adjust:exact;"></div>
     </div>
   </div>`;
 }

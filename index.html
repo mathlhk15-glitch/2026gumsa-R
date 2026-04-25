@@ -201,7 +201,6 @@ body.light-mode .tab.active { background:var(--accent) !important; color:#fff !i
   <input id="studentId" placeholder="학번 (예: 10101)" />
   <button class="btn btn-primary" onclick="loadStudent()">조회</button>
     <button class="btn btn-secondary" onclick="resetDashboard()" title="초기화">🔄 초기화</button>
-    <button class="btn btn-secondary" onclick="switchMode()">📋 직접입력</button>
     <button class="btn btn-secondary no-print" id="themeBtn" onclick="toggleTheme()" title="다크/라이트 모드 전환">🌙</button>
     <button class="btn btn-secondary no-print" onclick="savePDF()" title="PDF 저장">🖨️ PDF</button>
   </div>
@@ -211,132 +210,7 @@ body.light-mode .tab.active { background:var(--accent) !important; color:#fff !i
   <!-- MODE: EMPTY -->
   <div id="emptyState" class="empty">
     <div class="empty-icon">🔍</div>
-    <p>학번을 입력하고 <strong>조회</strong>를 클릭하세요.<br>
-    또는 <strong>📋 직접입력</strong>을 눌러 데이터를 붙여넣을 수 있습니다.</p>
-  </div>
-
-  <!-- MODE: PASTE -->
-  <div id="pasteMode" style="display:none;">
-    <div class="card" style="margin-bottom:16px;">
-      <div class="card-title"><span>📋</span> 데이터 직접 입력</div>
-      <div class="tabs">
-        <button class="tab active" onclick="setTab(this,'json')">JSON (4종검사)</button>
-        <button class="tab" onclick="setTab(this,'sheet')">시트 데이터 (탭구분)</button>
-      </div>
-      <textarea id="pasteData" class="paste-area" placeholder="JSON 또는 시트에서 복사한 데이터를 여기에 붙여넣으세요..."></textarea>
-
-      <!-- 자기주도학습 직접 입력 -->
-      <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px;">
-        <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:10px;letter-spacing:.5px;">📐 자기주도학습검사 점수 (직접 입력)</div>
-        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">
-          <div>
-            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습계획</label>
-            <input type="number" id="sdl_plan" min="0" max="80" placeholder="0~80"
-              style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
-          </div>
-          <div>
-            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습실행</label>
-            <input type="number" id="sdl_exec" min="0" max="80" placeholder="0~80"
-              style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
-          </div>
-          <div>
-            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습평가</label>
-            <input type="number" id="sdl_eval" min="0" max="80" placeholder="0~80"
-              style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
-          </div>
-          <div>
-            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습효능감</label>
-            <input type="number" id="sdl_eff" min="0" max="80" placeholder="0~80"
-              style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
-          </div>
-          <div>
-            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습메타인지</label>
-            <input type="number" id="sdl_meta" min="0" max="80" placeholder="0~80"
-              style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
-          </div>
-        </div>
-      </div>
-
-      <!-- 인성검사 직접 입력 -->
-      <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px;">
-        <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:10px;letter-spacing:.5px;">🧬 인성검사 결과 (직접 입력)</div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
-          <div>
-            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">외향성</label>
-            <select id="per_ext" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
-              <option value="">선택</option><option>매우낮음</option><option>낮음</option><option>보통</option><option>높음</option><option>매우높음</option>
-            </select>
-          </div>
-          <div>
-            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">우호성</label>
-            <select id="per_agr" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
-              <option value="">선택</option><option>매우낮음</option><option>낮음</option><option>보통</option><option>높음</option><option>매우높음</option>
-            </select>
-          </div>
-          <div>
-            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">성실성</label>
-            <select id="per_con" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
-              <option value="">선택</option><option>매우낮음</option><option>낮음</option><option>보통</option><option>높음</option><option>매우높음</option>
-            </select>
-          </div>
-          <div>
-            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">개방성</label>
-            <select id="per_ope" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
-              <option value="">선택</option><option>매우낮음</option><option>낮음</option><option>보통</option><option>높음</option><option>매우높음</option>
-            </select>
-          </div>
-          <div>
-            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">정서적안정</label>
-            <select id="per_neu" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
-              <option value="">선택</option><option>매우낮음</option><option>낮음</option><option>보통</option><option>높음</option><option>매우높음</option>
-            </select>
-          </div>
-          <div>
-            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학교적응</label>
-            <select id="per_ssat" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
-              <option value="">선택</option><option>매우낮음</option><option>낮음</option><option>보통</option><option>높음</option><option>매우높음</option>
-            </select>
-          </div>
-          <div>
-            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">사회적응</label>
-            <select id="per_sadp" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
-              <option value="">선택</option><option>매우낮음</option><option>낮음</option><option>보통</option><option>높음</option><option>매우높음</option>
-            </select>
-          </div>
-          <div>
-            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">또래관계</label>
-            <select id="per_peer" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
-              <option value="">선택</option><option>매우나쁨</option><option>나쁨</option><option>보통</option><option>좋음</option><option>매우좋음</option>
-            </select>
-          </div>
-          <div>
-            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학업수준</label>
-            <select id="per_grade" style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
-              <option value="">선택</option><option>매우낮음</option><option>낮음</option><option>보통</option><option>높음</option><option>매우높음</option>
-            </select>
-          </div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
-          <div>
-            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">선호과목</label>
-            <input type="text" id="per_fav" placeholder="예: 수학"
-              style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
-          </div>
-          <div>
-            <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">비선호과목</label>
-            <input type="text" id="per_bad" placeholder="예: 영어"
-              style="width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;">
-          </div>
-        </div>
-      </div>
-
-      <div style="display:flex;gap:8px;margin-top:14px;align-items:center;">
-        <button class="btn btn-green" onclick="parsePastedData()">✅ 분석 시작</button>
-        <button class="btn btn-secondary" onclick="loadSampleData()">📦 샘플 데이터로 테스트</button>
-        <button class="btn btn-secondary" onclick="goBack()">← 뒤로가기</button>
-        <div id="pasteLoading" class="loading"><div class="spinner"></div><span style="font-size:12px;color:var(--text2);">파싱 중...</span></div>
-      </div>
-    </div>
+    <p>교사용 비밀번호와 학번을 입력한 뒤 <strong>조회</strong>를 클릭하세요.</p>
   </div>
 
   <!-- DASHBOARD -->
@@ -418,24 +292,8 @@ body.light-mode .tab.active { background:var(--accent) !important; color:#fff !i
     <!-- ⑥ 자기주도학습 -->
     <div class="card" style="margin-bottom:16px;">
       <div class="card-title"><span>📚</span> 자기주도학습 분석
-        <button class="btn btn-secondary no-print" id="sdlEditBtn" onclick="toggleSdlEdit()" style="margin-left:auto;padding:3px 10px;font-size:11px;">✏️ 점수 입력</button>
       </div>
-      <!-- SDL 인라인 입력 패널 -->
-      <div id="sdlEditPanel" style="display:none;margin-bottom:14px;background:var(--surface2);border-radius:8px;padding:12px;">
-        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:8px;">
-          <div><label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습계획</label>
-            <input type="number" id="db_sdl_plan" min="0" max="80" placeholder="0~80" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:5px 7px;border-radius:5px;font-size:13px;font-family:inherit;outline:none;"></div>
-          <div><label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습실행</label>
-            <input type="number" id="db_sdl_exec" min="0" max="80" placeholder="0~80" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:5px 7px;border-radius:5px;font-size:13px;font-family:inherit;outline:none;"></div>
-          <div><label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습평가</label>
-            <input type="number" id="db_sdl_eval" min="0" max="80" placeholder="0~80" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:5px 7px;border-radius:5px;font-size:13px;font-family:inherit;outline:none;"></div>
-          <div><label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습효능감</label>
-            <input type="number" id="db_sdl_eff" min="0" max="80" placeholder="0~80" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:5px 7px;border-radius:5px;font-size:13px;font-family:inherit;outline:none;"></div>
-          <div><label style="font-size:11px;color:var(--text2);display:block;margin-bottom:3px;">학습메타인지</label>
-            <input type="number" id="db_sdl_meta" min="0" max="80" placeholder="0~80" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:5px 7px;border-radius:5px;font-size:13px;font-family:inherit;outline:none;"></div>
-        </div>
-        <button class="btn btn-green" onclick="applySdlInput()" style="font-size:12px;padding:6px 14px;">✅ 적용</button>
-      </div>
+ 
       <!-- SDL 차트 + 영역별 점수표 -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
         <div class="chart-wrap" style="height:280px;"><canvas id="radarSelf"></canvas></div>
@@ -481,7 +339,6 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbyHuyDqAU6tyUKl8b9qd_Yt
 // ============ STATE ============
 let currentStudent = null;
 let currentData = [];
-let pasteType = 'json';
 let charts = {};
 let isDark = true;
 
@@ -647,133 +504,15 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// ============ SDL 인라인 입력 ============
-function toggleSdlEdit() {
-  const panel = document.getElementById('sdlEditPanel');
-  const isHidden = panel.style.display === 'none';
-  panel.style.display = isHidden ? 'block' : 'none';
-  document.getElementById('sdlEditBtn').textContent = isHidden ? '✖ 닫기' : '✏️ 점수 입력';
-  // 기존 값이 있으면 입력란에 채워줌
-  if(isHidden && currentStudent?.selfDirected) {
-    const sd = currentStudent.selfDirected;
-    const map = { db_sdl_plan:'학습계획', db_sdl_exec:'학습실행', db_sdl_eval:'학습평가', db_sdl_eff:'학습효능감', db_sdl_meta:'학습메타인지' };
-    Object.entries(map).forEach(([id, key]) => {
-      const el = document.getElementById(id);
-      if(el && sd[key]) el.value = sd[key];
-    });
-  }
-}
-
-function applySdlInput() {
-  if(!currentStudent) return;
-  const vals = {
-    학습계획:    +document.getElementById('db_sdl_plan').value  || 0,
-    학습실행:    +document.getElementById('db_sdl_exec').value  || 0,
-    학습평가:    +document.getElementById('db_sdl_eval').value  || 0,
-    학습효능감:  +document.getElementById('db_sdl_eff').value   || 0,
-    학습메타인지:+document.getElementById('db_sdl_meta').value  || 0
-  };
-  if(!Object.values(vals).some(v => v > 0)) return alert('점수를 입력하세요.');
-  currentStudent.selfDirected = vals;
-  renderSDL(vals, currentStudent.sbuText || '', currentStudent.sdlNarrative || {});
-  // stat-row 갱신
-  const statRow = document.getElementById('statRow');
-  const existing = statRow.querySelector('[data-key="sdl"]');
-  const sdVals = Object.values(vals).filter(v => v > 0);
-  const avg = Math.round(sdVals.reduce((a,b)=>a+b,0) / sdVals.length);
-  if(existing) {
-    existing.querySelector('.value').textContent = avg + '점';
-  } else {
-    const box = document.createElement('div');
-    box.className = 'stat-box'; box.dataset.key = 'sdl';
-    box.innerHTML = `<div class="label">자기주도 평균</div><div class="value ${avg>=55?'high':avg>=40?'mid':'low'}">${avg}점</div>`;
-    statRow.insertBefore(box, statRow.firstChild);
-  }
-  document.getElementById('sdlEditPanel').style.display = 'none';
-  document.getElementById('sdlEditBtn').textContent = '✏️ 점수 입력';
-}
 
 // ============ MODE SWITCH ============
 function resetDashboard() {
   currentStudent = null;
   document.getElementById('studentId').value = '';
   document.getElementById('dashboard').style.display = 'none';
-  document.getElementById('pasteMode').style.display = 'none';
   document.getElementById('emptyState').style.display = 'block';
   // 차트 초기화
   Object.keys(charts).forEach(k => { if(charts[k]) { charts[k].destroy(); delete charts[k]; } });
-}
-
-function switchMode() {
-  const paste = document.getElementById('pasteMode');
-  const empty = document.getElementById('emptyState');
-  const dash = document.getElementById('dashboard');
-  if(paste.style.display === 'none') {
-    // 직접입력 모드로 전환 — 이전 상태 기억
-    window._prevMode = dash.style.display === 'block' ? 'dashboard' : 'empty';
-    paste.style.display = 'block'; empty.style.display = 'none'; dash.style.display = 'none';
-  } else {
-    goBack();
-  }
-}
-function goBack() {
-  const paste = document.getElementById('pasteMode');
-  const empty = document.getElementById('emptyState');
-  const dash = document.getElementById('dashboard');
-  paste.style.display = 'none';
-  if(window._prevMode === 'dashboard' || currentStudent) {
-    dash.style.display = 'block'; empty.style.display = 'none';
-  } else {
-    empty.style.display = 'block'; dash.style.display = 'none';
-  }
-}
-function setTab(el, type) {
-  pasteType = type;
-  el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('pasteData').placeholder = type === 'json'
-    ? 'JSON 데이터를 붙여넣으세요...\n예: {"aptitude":{...},"personality":{...},"interest":{...},"career":{...}}'
-    : '구글시트 AUTO_DB에서 복사한 데이터를 붙여넣으세요 (탭으로 구분된 행 데이터)';
-}
-
-// ============ SAMPLE DATA ============
-function loadSampleData() {
-  const sample = {
-    student: { id: "10101", grade: 1, cls: 1, num: 1, name: "권범준" },
-    aptitude: { scores: [
-      {name:"언어력",score:95,level:"중하"},{name:"수리력",score:124,level:"최상"},{name:"추리력",score:144,level:"최상"},
-      {name:"공간능력",score:113,level:"상"},{name:"지각속도",score:105,level:"중상"},{name:"과학능력",score:131,level:"최상"},
-      {name:"집중능력",score:113,level:"상"},{name:"색채능력",score:98,level:"중하"},{name:"사고유연성",score:109,level:"중상"}
-    ], jobs:["기계공학기술자","응급구조사","전문의사","중등학교교사","중등학교교사_자연계열"]},
-    personality: {ext:"보통",agr:"낮음",con:"높음",ope:"높음",neu:"높음",ssat:"보통",sadp:"보통",peer:"매우좋음",grade:"매우높음",fav:"음악",bad:"영어",dept:"공대쪽",job:"발명가"},
-    interest: {code1:"A (예술형)",code2:"I (탐구형)",types:[
-      {code:"R",name:"현실형",t:33,lv:"최하"},{code:"I",name:"탐구형",t:50,lv:"중상"},{code:"A",name:"예술형",t:62,lv:"상"},
-      {code:"S",name:"사회형",t:44,lv:"중하"},{code:"E",name:"진취형",t:49,lv:"중하"},{code:"C",name:"관습형",t:48,lv:"중하"}
-    ],hi:"음악",lo:"사회안전",jobs:"작사가, 디자이너, 안무가, 의상디자이너, 화가"},
-    career: {
-      cm:{t:53,lv:"보통",subs:[{name:"계획성",sc:61,lv:"높음"},{name:"독립성",sc:56,lv:"보통"},{name:"일에 대한 태도",sc:63,lv:"높음"},{name:"자기이해",sc:60,lv:"보통"},{name:"직업정보이해",sc:52,lv:"보통"},{name:"진로탐색행동",sc:47,lv:"보통"}]},
-      cd:{sc:55,lv:"보통",subs:[{name:"진로유연성",sc:40,lv:"보통"},{name:"진로개방성",sc:44,lv:"보통"},{name:"심리적독립",sc:43,lv:"보통"},{name:"자기이해 부족",sc:41,lv:"보통"},{name:"직업정보 부족",sc:48,lv:"보통"},{name:"자기갈등",sc:57,lv:"보통"},{name:"관계갈등",sc:64,lv:"높음"},{name:"환경갈등",sc:54,lv:"보통"}]},
-      thought:"나하고 잘 맞는것 같다",plan:"좀더 다양한 분야에서 내 스스로 발전을 이뤄야겠다"
-    },
-    selfDirected: {학습계획:67,학습실행:72,학습평가:68,학습효능감:67,학습메타인지:68},
-    sdlNarrative: {
-      학습계획: "학습 목표 설정은 어느 정도 가능하지만, 계획을 지속적으로 실행하기 위한 외부 지원이 도움이 될 수 있습니다.",
-      학습실행: "수립한 계획을 꾸준히 실행하는 능력이 우수합니다. 목표에 압도되지 않고 효율적으로 학습을 이어나갑니다.",
-      학습평가: "학습 진행 상황을 어느 정도 평가할 수 있지만, 계획 조정에 외부 도움이 필요하며 더 깊은 자기 성찰이 요구됩니다.",
-      학습효능감: "학습 능력에 어느 정도 자신감이 있으나, 새로운 상황에서 불확실성을 느끼며 격려와 지지가 도움이 됩니다.",
-      학습메타인지: "학습을 모니터링하고 전략을 어느 정도 조정할 수 있으나, 개선 영역 발견과 깊은 성찰에는 외부 도움이 유용합니다.",
-      학습강점: "학습계획, 학습실행, 학습평가, 학습효능감, 학습메타인지",
-      학습약점: "해당 없음",
-      종합의견: "자기주도학습검사(2026.04.14)를 통해 자기주도적 학습의 전체 수준을 확인하였음. 그 결과, 학습 목표를 달성하기 위한 계획을 개발하는 능력인 학습계획, 학습계획을 효과적으로 구현하고 수행하는 학습 실천 능력, 학습진행을 스스로 돌아보고 성찰하고 개선하는 학습평가, 학습과 관련된 과제를 성공적으로 완료하거나 목표를 달성할 수 있다는 학습자의 믿음, 학습 과정을 반성하고 진행 상황을 모니터링하며 필요에 따라 전략을 조정하는 학습자의 능력인 학습메타인지 영역에서 높게 나타나는 성향을 보임"
-    },
-    sbuText: "자기주도검사(2026.04.14) 결과에 따르면, 학습계획 및 학습실행 영역에서는 계획을 체계적으로 수립하고 이를 실천으로 옮기는 능력이 두드러지게 나타남.",
-    counseling: [
-      {date:"2026-04-14",type:"검사",title:"5종 검사 실시",desc:"적성·인성·흥미·진로발달·자기주도 검사 완료"},
-      {date:"2026-05-15",type:"상담",title:"1차 진로면담",desc:"공학+예술 융합 진로 탐색. 기계공학+디자인 이중전공 관심"},
-      {date:"2026-09-10",type:"상담",title:"2차 학습전략 상담",desc:"주간 학습 계획표 작성 시작. 수리·과학 심화 학습 방향 설정"}
-    ]
-  };
-  renderDashboard(sample);
 }
 
 // ============ LOAD FROM GAS ============
@@ -800,171 +539,9 @@ async function loadStudent() {
   }
 }
 
-// ============ PARSE PASTED DATA ============
-function parsePastedData() {
-  const raw = document.getElementById('pasteData').value.trim();
-
-  // 자기주도학습 직접입력 수집
-  const sdlInputs = {
-    학습계획:   +document.getElementById('sdl_plan').value  || 0,
-    학습실행:   +document.getElementById('sdl_exec').value  || 0,
-    학습평가:   +document.getElementById('sdl_eval').value  || 0,
-    학습효능감: +document.getElementById('sdl_eff').value   || 0,
-    학습메타인지:+document.getElementById('sdl_meta').value || 0
-  };
-  const hasSdl = Object.values(sdlInputs).some(v => v > 0);
-
-  // JSON이 비어있지만 SDL 점수가 있고 기존 학생 데이터가 있으면 → SDL만 업데이트
-  if(!raw && hasSdl && currentStudent) {
-    currentStudent.selfDirected = sdlInputs;
-    renderDashboard(currentStudent);
-    return;
-  }
-  if(!raw) return alert('데이터를 붙여넣으세요.');
-
-  // 인성검사 직접입력 수집
-  const perInputs = {
-    ext:  document.getElementById('per_ext').value,
-    agr:  document.getElementById('per_agr').value,
-    con:  document.getElementById('per_con').value,
-    ope:  document.getElementById('per_ope').value,
-    neu:  document.getElementById('per_neu').value,
-    ssat: document.getElementById('per_ssat').value,
-    sadp: document.getElementById('per_sadp').value,
-    peer: document.getElementById('per_peer').value,
-    grade:document.getElementById('per_grade').value,
-    fav:  document.getElementById('per_fav').value.trim(),
-    bad:  document.getElementById('per_bad').value.trim()
-  };
-  const hasper = Object.values(perInputs).some(v => v);
-
-  try {
-    let mapped;
-    if(pasteType === 'json') {
-      const d = JSON.parse(raw);
-      const student = d.student || { id: "00000", grade: 1, cls: 0, num: 0, name: "학생" };
-      mapped = {
-        student: { id: student.id || "00000", grade: student.grade || 1, cls: student.cls || 0, num: student.num || 0, name: student.name || "학생" },
-        aptitude: d.aptitude || null,
-        personality: d.personality || null,
-        interest: d.interest || null,
-        career: d.career || null,
-        selfDirected: d.selfDirected || null,
-        sdlNarrative: d.sdlNarrative || {},
-        sbuText: d.sbuText || "",
-        counseling: d.counseling || []
-      };
-    } else {
-      const lines = raw.split('\n').filter(l => l.trim());
-      mapped = parseSheetData(lines);
-    }
-
-    // 자기주도 직접입력 병합 (기존 데이터 없으면 대체, 있어도 직접입력 우선)
-    if(hasSdl) mapped.selfDirected = sdlInputs;
-
-    // 인성 직접입력 병합
-    if(hasper) {
-      mapped.personality = mapped.personality || {};
-      Object.entries(perInputs).forEach(([k,v]) => { if(v) mapped.personality[k] = v; });
-    }
-
-    renderDashboard(mapped);
-  } catch(e) { alert('파싱 오류: ' + e.message); }
-}
-
-function parseSheetData(lines) {
-  // Expect AUTO_DB format: 학번|학년|반|번호|이름|날짜|자료유형|항목|값|수준|요약
-  const data = {
-    student: {}, aptitude: { scores: [], jobs: [] }, personality: {},
-    interest: { types: [], code1: '', code2: '', hi: '', lo: '', jobs: '' },
-    career: { cm: { t: 0, lv: '', subs: [] }, cd: { sc: 0, lv: '', subs: [] }, thought: '', plan: '' },
-    selfDirected: {}, sdlNarrative: {}, counseling: [], sbuText: ""
-  };
-  const sdKeys = new Set(['학습계획','학습실행','학습평가','학습효능감','학습메타인지']);
-  const aptNames = new Set(["언어력","수리력","추리력","공간능력","지각속도","과학능력","집중능력","색채능력","사고유연성"]);
-  // 흥미 항목: "현실형(R)", "탐구형(I)" 등 → code 추출
-  const hollandCode = { '현실형': 'R', '탐구형': 'I', '예술형': 'A', '사회형': 'S', '진취형': 'E', '관습형': 'C' };
-  const pKeyMap = {'외향성':'ext','우호성':'agr','성실성':'con','개방성':'ope','정서적안정':'neu','학교적응':'ssat','사회적응':'sadp','또래관계':'peer','학업수준':'grade'};
-
-  for(const line of lines) {
-    const cols = line.split('\t');
-    if(cols.length < 8) continue;
-    const [sid, grade, cls, num, name, date, type, item, val, level, summary] = cols;
-    const itemT = (item || '').trim();
-    const valT  = (val  || '').trim();
-    const lvT   = (level|| '').trim();
-
-    if(!data.student.id && sid && sid.trim()) {
-      data.student = { id: sid.trim(), grade: +grade, cls: +cls, num: +num, name: (name||'').trim() };
-    }
-
-    switch(type?.trim()) {
-      case '적성':
-        if(aptNames.has(itemT)) {
-          data.aptitude.scores.push({ name: itemT, score: +valT, level: lvT });
-        } else if(itemT === '추천직업') {
-          data.aptitude.jobs = valT.split(',').map(s => s.trim()).filter(Boolean);
-        }
-        break;
-
-      case '흥미': {
-        // "현실형(R)" 형태 파싱
-        const codeMatch = itemT.match(/\(([A-Z])\)/);
-        const nameBase  = itemT.replace(/\s*\([A-Z]\)/, '').trim();
-        if(codeMatch) {
-          const code = codeMatch[1];
-          // 중복 방지
-          if(!data.interest.types.find(t => t.code === code)) {
-            data.interest.types.push({ code, name: nameBase, t: +valT, lv: lvT });
-          }
-        } else if(itemT === '1순위코드')        data.interest.code1 = valT;
-        else if(itemT === '2순위코드')           data.interest.code2 = valT;
-        else if(itemT === '가장높은흥미분야')    data.interest.hi    = valT;
-        else if(itemT === '가장낮은흥미분야')    data.interest.lo    = valT;
-        else if(itemT === '흥미추천직업')        data.interest.jobs  = valT;
-        break;
-      }
-
-      case '자기주도':
-        if(sdKeys.has(itemT)) data.selfDirected[itemT] = +valT;
-        else if(itemT === '학생부데이터') data.sbuText = valT;
-        break;
-
-      case '인성':
-        if(pKeyMap[itemT])          data.personality[pKeyMap[itemT]] = lvT || valT;
-        else if(itemT === '선호과목')   data.personality.fav  = valT;
-        else if(itemT === '비선호과목') data.personality.bad  = valT;
-        else if(itemT === '희망계열')   data.personality.dept = valT;
-        else if(itemT === '희망직업')   data.personality.job  = valT;
-        break;
-
-      case '진로성숙도':
-        if(itemT === '종합') { data.career.cm.t = valT; data.career.cm.lv = lvT; }
-        else data.career.cm.subs.push({ name: itemT, sc: +valT, lv: lvT });
-        break;
-
-      case '진로결정':
-        if(itemT === '종합') { data.career.cd.sc = valT; data.career.cd.lv = lvT; }
-        else data.career.cd.subs.push({ name: itemT, sc: +valT, lv: lvT });
-        break;
-
-      case '진로발달':
-        if(itemT === '진로에대한생각') data.career.thought = valT;
-        else if(itemT === '노력할점')  data.career.plan    = valT;
-        break;
-
-      case '상담':
-        data.counseling.push({ date: (date||'').trim(), type: '상담', title: itemT, desc: (summary||valT||'').trim() });
-        break;
-    }
-  }
-  return data;
-}
-
 // ============ RENDER DASHBOARD ============
 function renderDashboard(d) {
   document.getElementById('emptyState').style.display = 'none';
-  document.getElementById('pasteMode').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
   currentStudent = d;
 
@@ -1316,7 +893,7 @@ function renderSDL(sd, sbuText, sdlNarrative) {
     const msg = document.createElement('div');
     msg.className = 'sdl-empty';
     msg.style.cssText = 'display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;gap:8px;';
-    msg.innerHTML = '<div style="font-size:32px;opacity:.3;">📐</div><div style="font-size:12px;color:var(--text2);">자기주도학습 데이터가 없습니다.</div><button onclick="switchMode()" style="margin-top:8px;padding:4px 12px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--accent);font-size:11px;cursor:pointer;font-family:inherit;">점수 직접입력</button>';
+    msg.innerHTML = '<div style="font-size:32px;opacity:.3;">📐</div><div style="font-size:12px;color:var(--text2);">자기주도학습 데이터가 없습니다.</div>';
     wrap.appendChild(msg);
     document.getElementById('sdlScoreTable').innerHTML = '';
     document.getElementById('sdlInterpretations').innerHTML = '';

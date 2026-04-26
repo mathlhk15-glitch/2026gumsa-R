@@ -184,12 +184,12 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--
   .header h1 { font-size:13px; white-space:normal; line-height:1.4; text-align:center; }
   .header-controls { flex-wrap:wrap; min-width:0; gap:6px; flex:none; width:100%; }
   .header-controls input { font-size:12px; padding:7px 10px; }
-  /* 비밀번호: 전체폭 */
-  #accessPw { flex:1 1 100%; min-width:0; width:100%; }
   /* 검색창 감싸는 div: 전체폭 */
   .header-controls > div[style*="position:relative"] { width:100%; flex:1 1 100%; }
   /* 검색 input: 전체폭 */
   #studentQuery { width:100%; min-width:0; box-sizing:border-box; }
+  /* 비밀번호: 전체폭 */
+  #accessPw { flex:1 1 100%; min-width:0; width:100%; }
   /* 조회/초기화 버튼: 나란히 */
   .btn { font-size:12px; padding:7px 12px; }
   .btn-primary { flex:1; }
@@ -336,7 +336,6 @@ body.light-mode .tab.active { background:var(--accent) !important; color:#fff !i
 <div class="header">
   <h1>📊 2026 창원경일고 인성적성진로자기주도 검사 결과</h1>
   <div class="header-controls">
-    <input id="accessPw" type="password" placeholder="교사용 비밀번호" onkeydown="if(event.key==='Enter')handleSearch()" />
     <div style="position:relative;flex:1;min-width:0;">
       <input id="studentQuery" placeholder="학번 또는 이름 입력"
         oninput="onQueryInput()"
@@ -345,6 +344,7 @@ body.light-mode .tab.active { background:var(--accent) !important; color:#fff !i
       <!-- 후보 드롭다운 -->
       <div id="candidateList" style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.3);z-index:200;max-height:260px;overflow-y:auto;"></div>
     </div>
+    <input id="accessPw" type="password" placeholder="교사용 비밀번호" onkeydown="if(event.key==='Enter')handleSearch()" />
     <button class="btn btn-primary" onclick="handleSearch()">조회</button>
     <button class="btn btn-secondary" onclick="resetDashboard()" title="초기화">🔄 초기화</button>
     <button class="btn btn-secondary no-print" id="themeBtn" onclick="toggleTheme()" title="다크/라이트 모드 전환">🌙</button>

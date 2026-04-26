@@ -184,9 +184,18 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--
   .header h1 { font-size:13px; white-space:normal; line-height:1.4; text-align:center; }
   .header-controls { flex-wrap:wrap; min-width:0; gap:6px; flex:none; width:100%; }
   .header-controls input { font-size:12px; padding:7px 10px; }
-  #accessPw { flex:1 1 45%; min-width:0; }
-  #studentQuery { flex:1 1 30%; min-width:0; width:auto; }
+  /* 비밀번호: 전체폭 */
+  #accessPw { flex:1 1 100%; min-width:0; width:100%; }
+  /* 검색창 감싸는 div: 전체폭 */
+  .header-controls > div[style*="position:relative"] { width:100%; flex:1 1 100%; }
+  /* 검색 input: 전체폭 */
+  #studentQuery { width:100%; min-width:0; box-sizing:border-box; }
+  /* 조회/초기화 버튼: 나란히 */
   .btn { font-size:12px; padding:7px 12px; }
+  .btn-primary { flex:1; }
+  /* 🌙 테마, PDF 버튼은 모바일에서 숨김 */
+  #themeBtn { display:none; }
+  .btn[onclick="savePDF()"] { display:none; }
 
   /* 메인 패딩 */
   .main { padding:10px; }
@@ -803,6 +812,22 @@ async function handleSearch() {
   if (!ok) return;
 
   const found = filterByName(q);
+
+  // 디버그: 화면에 직접 표시
+  const sample = studentList.slice(0, 5).map(s => `"${s.name}"(${s.id})`).join(', ');
+  document.getElementById('emptyState').style.display = 'block';
+  document.getElementById('emptyState').innerHTML = `
+    <div style="text-align:left;font-size:13px;line-height:2;padding:10px;">
+      <b>🔍 디버그 정보</b><br>
+      명단 총 인원: <b>${studentList.length}명</b><br>
+      검색어: <b>"${q}"</b> (글자수: ${[...q].length})<br>
+      검색 결과: <b>${found.length}명</b><br>
+      명단 샘플(앞5명): ${sample}<br>
+      <br>
+      ${found.length > 0
+        ? found.map(s=>`✅ ${s.name} (${s.id})`).join('<br>')
+        : '❌ 검색 결과 없음 — 이름이 시트와 다를 수 있습니다'}
+    </div>`;
 
   if (found.length === 0) {
     alert(`"${q}" 이름의 학생을 찾을 수 없습니다.`);

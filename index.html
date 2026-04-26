@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>2026 창원경일고 인성적성진로자기주도 검사 결과</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap');
 :root {
@@ -183,7 +185,7 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--
   .header-controls { flex-wrap:wrap; min-width:0; gap:6px; flex:none; width:100%; }
   .header-controls input { font-size:12px; padding:7px 10px; }
   #accessPw { flex:1 1 45%; min-width:0; }
-  #studentId { flex:1 1 30%; min-width:0; width:auto; }
+  #studentQuery { flex:1 1 30%; min-width:0; width:auto; }
   .btn { font-size:12px; padding:7px 12px; }
 
   /* 메인 패딩 */
@@ -327,9 +329,16 @@ body.light-mode .tab.active { background:var(--accent) !important; color:#fff !i
 <div class="header">
   <h1>📊 2026 창원경일고 인성적성진로자기주도 검사 결과</h1>
   <div class="header-controls">
-  <input id="accessPw" type="password" placeholder="교사용 비밀번호" />
-  <input id="studentId" placeholder="학번 (예: 10101)" />
-  <button class="btn btn-primary" onclick="loadStudent()">조회</button>
+    <input id="accessPw" type="password" placeholder="교사용 비밀번호" onkeydown="if(event.key==='Enter')handleSearch()" />
+    <div style="position:relative;flex:1;min-width:0;">
+      <input id="studentQuery" placeholder="학번 또는 이름 입력"
+        oninput="onQueryInput()"
+        onkeydown="if(event.key==='Enter')handleSearch()"
+        autocomplete="off" />
+      <!-- 후보 드롭다운 -->
+      <div id="candidateList" style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.3);z-index:200;max-height:260px;overflow-y:auto;"></div>
+    </div>
+    <button class="btn btn-primary" onclick="handleSearch()">조회</button>
     <button class="btn btn-secondary" onclick="resetDashboard()" title="초기화">🔄 초기화</button>
     <button class="btn btn-secondary no-print" id="themeBtn" onclick="toggleTheme()" title="다크/라이트 모드 전환">🌙</button>
     <button class="btn btn-secondary no-print" onclick="savePDF()" title="PDF 저장">🖨️ PDF</button>
@@ -340,7 +349,7 @@ body.light-mode .tab.active { background:var(--accent) !important; color:#fff !i
   <!-- MODE: EMPTY -->
   <div id="emptyState" class="empty">
     <div class="empty-icon">🔍</div>
-    <p>교사용 비밀번호와 학번을 입력한 뒤 <strong>조회</strong>를 클릭하세요.</p>
+    <p>교사용 비밀번호와 학번 또는 이름을 입력한 뒤 <strong>조회</strong>를 클릭하세요.</p>
   </div>
 
   <!-- DASHBOARD -->
@@ -433,14 +442,6 @@ body.light-mode .tab.active { background:var(--accent) !important; color:#fff !i
       <div id="sdlInterpretations" style="margin-top:16px;"></div>
       <!-- 학습 강점/약점 -->
       <div id="sdlStrengthWeak" class="inner-grid-2" style="margin-top:12px;"></div>
-      <!-- 생기부 참고문장 -->
-      <div id="sdlSbuText" style="margin-top:12px;"></div>
-    </div>
-
-    <!-- ⑧ 학생부 기재 데이터 -->
-    <div class="card" style="margin-bottom:16px;">
-      <div class="card-title"><span>📄</span> 학생부 기재 데이터</div>
-      <div class="sbu-box" id="sbuData">학생부 데이터가 없습니다.</div>
     </div>
 
   </div>
@@ -499,66 +500,114 @@ function toggleTheme() {
 }
 
 // ============ PDF SAVE ============
-function savePDF() {
+async function savePDF() {
+  if(!currentStudent) return alert('먼저 학생 데이터를 로드하세요.');
+
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  // ── 라이트모드 전환 (공통) ──
   const wasLight = document.body.classList.contains('light-mode');
-  if(!wasLight) {
-    document.body.classList.add('light-mode');
-    const gridCol='#e2e5ef', tickCol='#5a6075', labelCol='#1a1d27';
+  const setChartColors = (dark) => {
+    const gridCol  = dark ? '#2e3347' : '#e2e5ef';
+    const tickCol  = dark ? '#8b90a5' : '#5a6075';
+    const labelCol = dark ? '#e4e7f1' : '#1a1d27';
     Object.values(charts).forEach(ch => {
       if(!ch?.options) return;
       const sc = ch.options.scales || {};
       ['x','y','r'].forEach(k => {
         if(!sc[k]) return;
-        if(sc[k].grid) sc[k].grid.color = gridCol;
-        if(sc[k].ticks) sc[k].ticks.color = tickCol;
+        if(sc[k].grid)        sc[k].grid.color        = gridCol;
+        if(sc[k].ticks)       sc[k].ticks.color       = tickCol;
         if(sc[k].pointLabels) sc[k].pointLabels.color = labelCol;
       });
       if(ch.options.plugins?.legend?.labels) ch.options.plugins.legend.labels.color = labelCol;
       ch.update();
     });
+  };
+  if(!wasLight) { document.body.classList.add('light-mode'); setChartColors(false); }
+
+  // ── PC: 기존 window.print() 방식 ──
+  if(!isMobile) {
+    const origTitle = document.title;
+    if(currentStudent?.student) {
+      const s = currentStudent.student;
+      document.title = `${s.id}_${s.name}_진로상담`;
+    }
+    // 차트 캔버스 → PNG 이미지 (인쇄용)
+    const chartImgs = [];
+    document.querySelectorAll('.chart-wrap').forEach(wrap => {
+      const canvas = wrap.querySelector('canvas');
+      if(canvas) {
+        wrap.querySelectorAll('.print-chart-img').forEach(e => e.remove());
+        try {
+          const img = document.createElement('img');
+          img.className = 'print-chart-img';
+          img.src = canvas.toDataURL('image/png');
+          img.style.cssText = 'display:none;width:100%;height:220px;object-fit:contain;';
+          wrap.appendChild(img);
+          chartImgs.push(img);
+        } catch(e) {}
+      }
+    });
+    setTimeout(() => {
+      window.print();
+      chartImgs.forEach(img => img.remove());
+      document.title = origTitle;
+      if(!wasLight) { document.body.classList.remove('light-mode'); setChartColors(true); }
+    }, 400);
+    return;
   }
-  const origTitle = document.title;
-  if(currentStudent?.student) {
+
+  // ── 모바일: html2canvas + jsPDF ──
+  const btn = document.querySelector('[onclick="savePDF()"]');
+  const origText = btn ? btn.innerHTML : '';
+  if(btn) { btn.innerHTML = '⏳ 생성중...'; btn.disabled = true; }
+
+  const noPrints = document.querySelectorAll('.no-print, .header-controls');
+  noPrints.forEach(el => el.style.visibility = 'hidden');
+
+  await new Promise(r => setTimeout(r, 300));
+
+  try {
+    const { jsPDF } = window.jspdf;
+    // 헤더 + 대시보드 전체 캡처
+    const target = document.body;
+
+    const canvas = await html2canvas(target, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      logging: false,
+      windowWidth: 1200,
+      ignoreElements: el => el.classList.contains('no-print') || el.classList.contains('header-controls'),
+    });
+
+    const imgData = canvas.toDataURL('image/jpeg', 0.92);
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
+    const margin = 8;
+    const contentW = pageW - margin * 2;
+    const imgH = (canvas.height / canvas.width) * contentW;
+    const pageContentH = pageH - margin * 2;
+
+    let y = 0;
+    while(y < imgH) {
+      if(y > 0) pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', margin, margin - y, contentW, imgH);
+      y += pageContentH;
+    }
+
     const s = currentStudent.student;
-    document.title = `${s.id}_${s.name}_진로상담`;
+    pdf.save(`${s.id}_${s.name}_진로상담.pdf`);
+
+  } catch(e) {
+    alert('PDF 생성 중 오류가 발생했습니다.\n' + e.message);
+  } finally {
+    noPrints.forEach(el => el.style.visibility = '');
+    if(!wasLight) { document.body.classList.remove('light-mode'); setChartColors(true); }
+    if(btn) { btn.innerHTML = origText; btn.disabled = false; }
   }
-  // 차트 캔버스 → PNG 이미지로 변환 (인쇄용)
-  const chartImgs = [];
-  document.querySelectorAll('.chart-wrap').forEach(wrap => {
-    const canvas = wrap.querySelector('canvas');
-    if(canvas && canvas.style.display !== 'none') {
-      wrap.querySelectorAll('.print-chart-img').forEach(e => e.remove());
-      try {
-        const img = document.createElement('img');
-        img.className = 'print-chart-img';
-        img.src = canvas.toDataURL('image/png');
-        img.style.cssText = 'display:none;width:100%;height:220px;object-fit:contain;';
-        wrap.appendChild(img);
-        chartImgs.push(img);
-      } catch(e) {}
-    }
-  });
-  setTimeout(() => {
-    window.print();
-    chartImgs.forEach(img => img.remove());
-    document.title = origTitle;
-    if(!wasLight) {
-      document.body.classList.remove('light-mode');
-      const gridCol='#2e3347', tickCol='#8b90a5', labelCol='#e4e7f1';
-      Object.values(charts).forEach(ch => {
-        if(!ch?.options) return;
-        const sc = ch.options.scales || {};
-        ['x','y','r'].forEach(k => {
-          if(!sc[k]) return;
-          if(sc[k].grid) sc[k].grid.color = gridCol;
-          if(sc[k].ticks) sc[k].ticks.color = tickCol;
-          if(sc[k].pointLabels) sc[k].pointLabels.color = labelCol;
-        });
-        if(ch.options.plugins?.legend?.labels) ch.options.plugins.legend.labels.color = labelCol;
-        ch.update();
-      });
-    }
-  }, 500);
 }
 
 // ============ SETTINGS ============
@@ -666,12 +715,8 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('themeBtn').textContent = '☀️';
   }
 
-  document.getElementById('studentId').addEventListener('keydown', e => {
-    if(e.key === 'Enter') loadStudent();
-  });
-
   document.getElementById('accessPw').addEventListener('keydown', e => {
-    if(e.key === 'Enter') loadStudent();
+    if(e.key === 'Enter') handleSearch();
   });
 });
 
@@ -679,7 +724,8 @@ window.addEventListener('DOMContentLoaded', () => {
 // ============ MODE SWITCH ============
 function resetDashboard() {
   currentStudent = null;
-  document.getElementById('studentId').value = '';
+  document.getElementById('studentQuery').value = '';
+  hideCandidates();
   document.getElementById('dashboard').style.display = 'none';
   document.getElementById('emptyState').style.display = 'block';
   // 차트 초기화
@@ -687,28 +733,122 @@ function resetDashboard() {
 }
 
 // ============ LOAD FROM GAS ============
-async function loadStudent() {
-  const url = GAS_URL;
-  const sid = document.getElementById('studentId').value.trim();
+// ============ 이름 검색 / 학번 검색 통합 ============
+let studentList = [];      // 전체 명단 캐시
+let listLoaded  = false;   // 명단 로드 여부
+
+// 입력창 변경 시: 이름이면 후보 필터링
+function onQueryInput() {
+  const q = document.getElementById('studentQuery').value.trim();
+  if (!q || /^\d/.test(q)) { hideCandidates(); return; }
+  showCandidates(filterByName(q));
+}
+
+// 이름으로 명단 필터
+function filterByName(name) {
+  return studentList.filter(s => s.name.includes(name));
+}
+
+// 후보 드롭다운 표시
+function showCandidates(list) {
+  const box = document.getElementById('candidateList');
+  if (!list.length) { hideCandidates(); return; }
+  box.innerHTML = list.map(s =>
+    `<div onclick="selectCandidate('${s.id}')"
+      style="padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--border);font-size:13px;transition:background .15s;"
+      onmouseenter="this.style.background='rgba(108,99,255,.12)'"
+      onmouseleave="this.style.background=''">
+      <span style="font-weight:700;color:var(--text);">${s.name}</span>
+      <span style="color:var(--text2);font-size:12px;margin-left:8px;">${s.grade}학년 ${s.cls}반 ${s.num}번</span>
+      <span style="color:var(--accent);font-size:11px;margin-left:6px;">(${s.id})</span>
+    </div>`
+  ).join('');
+  box.style.display = 'block';
+}
+
+function hideCandidates() {
+  document.getElementById('candidateList').style.display = 'none';
+}
+
+// 후보 선택 → 학번으로 바로 조회
+function selectCandidate(id) {
+  document.getElementById('studentQuery').value = id;
+  hideCandidates();
+  loadStudentById(id);
+}
+
+// 검색창 외부 클릭 시 후보 닫기
+document.addEventListener('click', e => {
+  if (!e.target.closest('#studentQuery') && !e.target.closest('#candidateList')) hideCandidates();
+});
+
+// 조회 버튼 / 엔터 핸들러
+async function handleSearch() {
   const pw = document.getElementById('accessPw').value.trim();
-
   if (!pw) return alert('교사용 비밀번호를 입력하세요.');
-  if (!sid) return alert('학번을 입력하세요.');
 
+  const q = document.getElementById('studentQuery').value.trim();
+  if (!q) return alert('학번 또는 이름을 입력하세요.');
+
+  hideCandidates();
+
+  // 숫자 → 학번 직접 조회
+  if (/^\d+$/.test(q)) {
+    await loadStudentById(q);
+    return;
+  }
+
+  // 이름 → 명단에서 검색
+  const ok = await ensureStudentList(pw);
+  if (!ok) return;
+
+  const found = filterByName(q);
+
+  if (found.length === 0) {
+    alert(`"${q}" 이름의 학생을 찾을 수 없습니다.`);
+  } else if (found.length === 1) {
+    document.getElementById('studentQuery').value = found[0].id;
+    await loadStudentById(found[0].id);
+  } else {
+    showCandidates(found);
+  }
+}
+
+// 전체 명단 1회 로딩 (비밀번호 인증 포함)
+async function ensureStudentList(pw) {
+  if (listLoaded) return true;
   try {
-    const res = await fetch(
-      `${url}?action=getStudent&id=${encodeURIComponent(sid)}&pw=${encodeURIComponent(pw)}`
-    );
-
+    const res  = await fetch(`${GAS_URL}?action=getStudentList&pw=${encodeURIComponent(pw)}`);
     const data = await res.json();
+    if (data.error) {
+      alert('명단 조회 실패: ' + data.error + '\n\nGAS를 최신 버전으로 재배포했는지 확인하세요.');
+      return false;
+    }
+    studentList = data.students || [];
+    listLoaded  = true;
+    return true;
+  } catch(e) {
+    alert('명단 로드 실패: ' + e.message);
+    return false;
+  }
+}
 
+// 학번으로 학생 데이터 조회
+async function loadStudentById(sid) {
+  const pw = document.getElementById('accessPw').value.trim();
+  if (!pw) return alert('교사용 비밀번호를 입력하세요.');
+  try {
+    const res  = await fetch(`${GAS_URL}?action=getStudent&id=${encodeURIComponent(sid)}&pw=${encodeURIComponent(pw)}`);
+    const data = await res.json();
     if (data.error) return alert(data.error);
-
     renderDashboard(data);
   } catch(e) {
     alert('데이터 로드 실패: ' + e.message);
   }
 }
+
+// 기존 호환
+async function loadStudent() { await handleSearch(); }
 
 // ============ RENDER DASHBOARD ============
 function renderDashboard(d) {
@@ -746,8 +886,7 @@ function renderDashboard(d) {
   renderInterest(d.interest || {});
   renderPersonality(d.personality || {});
   renderCareer(d.career || {});
-  renderSDL(sd, d.sbuText || '', d.sdlNarrative || {});
-  document.getElementById('sbuData').textContent = d.sbuText || '학생부 데이터가 없습니다.';
+  renderSDL(d.sdlNarrative || {});
 }
 
 // ============ HELPERS ============
@@ -1047,10 +1186,10 @@ function renderCareer(career) {
 }
 
 // ============ ⑥ 자기주도학습 ============
-function renderSDL(sd, sbuText, sdlNarrative) {
+function renderSDL(narr={}) {
   destroyChart('radarSelf');
   destroyChart('lineGrowth');
-  const narr = sdlNarrative || {};
+  const sd = currentStudent?.selfDirected || {};
 
   const labels = ['학습계획','학습실행','학습평가','학습효능감','학습메타인지'];
   const values = labels.map(l => sd[l]||0);
@@ -1070,7 +1209,6 @@ function renderSDL(sd, sbuText, sdlNarrative) {
     document.getElementById('sdlScoreTable').innerHTML = '';
     document.getElementById('sdlInterpretations').innerHTML = '';
     document.getElementById('sdlStrengthWeak').innerHTML = '';
-    document.getElementById('sdlSbuText').innerHTML = '';
     return;
   }
   canvas.style.display = '';
@@ -1138,26 +1276,18 @@ function renderSDL(sd, sbuText, sdlNarrative) {
       <div style="font-size:12px;color:var(--text);line-height:1.8;">${narr.학습약점 || '데이터 없음'}</div>
     </div>` : '';
 
-  // 종합의견 — 구글시트 실제 데이터
-  const sbuSection = document.getElementById('sdlSbuText');
-  let sbuHTML = '';
+  // 종합의견
   if(narr.종합의견) {
-    sbuHTML += `<div style="background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.2);border-radius:8px;padding:12px;margin-bottom:8px;">
+    document.getElementById('sdlStrengthWeak').insertAdjacentHTML('afterend', `
+    <div style="margin-top:12px;background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.2);border-radius:8px;padding:12px;">
       <div style="font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.5px;margin-bottom:6px;">📊 종합 해석</div>
       <div style="font-size:12px;color:var(--text);line-height:1.8;">${narr.종합의견}</div>
-    </div>`;
+    </div>`);
   }
-  if(sbuText) {
-    sbuHTML += `<div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:12px;">
-      <div style="font-size:11px;font-weight:700;color:var(--warn);letter-spacing:.5px;margin-bottom:6px;">📋 생기부 참고문장</div>
-      <div style="font-size:12px;color:var(--text);line-height:1.8;">${sbuText}</div>
-    </div>`;
-  }
-  sbuSection.innerHTML = sbuHTML;
 }
 
 // ============ 구버전 함수들 (호환성 유지) ============
-function renderRadarSelf(sd) { renderSDL(sd, currentStudent?.sbuText || '', currentStudent?.sdlNarrative || {}); }
+function renderRadarSelf(sd) { renderSDL(currentStudent?.sdlNarrative || {}); }
 function renderRadarHolland(types) { /* handled by renderInterest */ }
 function renderBarAptitude(scores) { /* handled by renderAptitude */ }
 function renderBarCareer(career) { /* handled by renderCareer */ }

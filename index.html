@@ -2,7 +2,16 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="진로상담">
+<meta name="theme-color" content="#6c63ff">
+<meta name="description" content="2026 창원경일고 인성·적성·진로·자기주도 검사 결과 대시보드">
+<link rel="manifest" href="manifest.json">
+<!-- 앱 아이콘 (아이콘 파일이 없을 경우 브라우저 기본 아이콘 사용) -->
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>2026 창원경일고 인성적성진로자기주도 검사 결과</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -349,6 +358,7 @@ body.light-mode .tab.active { background:var(--accent) !important; color:#fff !i
     <button class="btn btn-secondary" onclick="resetDashboard()" title="초기화">🔄 초기화</button>
     <button class="btn btn-secondary no-print" id="themeBtn" onclick="toggleTheme()" title="다크/라이트 모드 전환">🌙</button>
     <button class="btn btn-secondary no-print" onclick="savePDF()" title="PDF 저장">🖨️ PDF</button>
+    <button class="btn btn-secondary no-print" id="installBtn" onclick="triggerInstall()" title="앱으로 설치" style="display:none;">📲 앱설치</button>
   </div>
 </div>
 
@@ -1291,6 +1301,35 @@ function renderSDL(narr={}) {
       <div style="font-size:12px;color:var(--text);line-height:1.8;">${narr.종합의견}</div>
     </div>`);
   }
+}
+
+// ============ PWA: Service Worker 등록 ============
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('[PWA] Service Worker 등록 완료:', reg.scope))
+      .catch(err => console.warn('[PWA] Service Worker 등록 실패:', err));
+  });
+}
+let deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  const btn = document.getElementById('installBtn');
+  if (btn) btn.style.display = 'inline-flex';
+});
+window.addEventListener('appinstalled', () => {
+  const btn = document.getElementById('installBtn');
+  if (btn) btn.style.display = 'none';
+  deferredInstallPrompt = null;
+});
+function triggerInstall() {
+  if (!deferredInstallPrompt) {
+    alert('이미 설치되어 있거나 자동 설치를 지원하지 않습니다.\n\n크롬 메뉴(⋮) → "홈 화면에 추가"를 선택하세요.');
+    return;
+  }
+  deferredInstallPrompt.prompt();
+  deferredInstallPrompt.userChoice.then(r => { deferredInstallPrompt = null; });
 }
 
 // ============ 구버전 함수들 (호환성 유지) ============
